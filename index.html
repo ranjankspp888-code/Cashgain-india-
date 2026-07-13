@@ -701,7 +701,7 @@
         }
 
         function shareReferral() {
-            let link = `Register using my code: ${currentUser}\nApp Link: https://YOUR_GITHUB_PAGE_URL`;
+            let link = `Register using my code: ${currentUser}\nApp Link: https://ranjankspp888-code.github.io/Cashgain-india-/`;
             if (navigator.share) navigator.share({ title: 'Fintech App', text: link }).catch(e=>{});
             else { navigator.clipboard.writeText(link); customAlert("Copied", "Link copied!", true); }
         }
