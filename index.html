@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport updated for full screen edge-to-edge experience -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    
+    <!-- PWA / Mobile App Meta Tags -->
+    <meta name="theme-color" content="#00a86b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="screen-orientation" content="portrait">
+    
+    <!-- Inline Manifest -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"Fintech App","short_name":"Fintech","start_url":".","display":"standalone","orientation":"portrait","background_color":"#f4f6f9","theme_color":"#00a86b"}'>
+    
+    <title>Indian Fintech App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #00a86b; --secondary: #008f5a; --bg: #f4f6f9; --card: #ffffff; --text-main: #333; --text-light: #777; }
+        
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-touch-callout: none; 
+        }
+        
+        /* 🔹 FULL SCREEN MOBILE LAYOUT (CHARO TARAF SE FIX) 🔹 */
+        html, body {
+            height: 100dvh; 
+            width: 100vw;
+            overflow: hidden; /* Locks screen to prevent browser bounce */
+            background-color: var(--bg); 
+        }
+
+        body { 
+            color: var(--text-main); 
+            user-select: none; 
+            -webkit-user-select: none;
+            overscroll-behavior-y: none; 
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        input, .refer-code, .upi-text { user-select: text; -webkit-user-select: text; -webkit-touch-callout: default; } 
+
+        .app-bar { 
+            background: var(--primary); 
+            color: white; 
+            padding: 18px 20px; 
+            text-align: center; 
+            font-size: 1.3rem; 
+            font-weight: 600; 
+            box-shadow: 0 2px 10px rgba(0,168,107,0.2); 
+            position: relative; 
+            flex-shrink: 0;
+            z-index: 100;
+            padding-top: max(18px, env(safe-area-inset-top)); 
+            width: 100%;
+        }
+
+        .page { 
+            display: none; 
+            padding: 15px; 
+            animation: fadeIn 0.3s ease-out forwards; 
+            flex: 1; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            padding-bottom: 95px; 
+            scrollbar-width: none; 
+            width: 100%;
+        }
+        .page::-webkit-scrollbar { display: none; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .auth-container { width: 100%; max-width: 500px; margin: 30px auto; background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); }
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
+        .input-group input { width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px; font-size: 1rem; outline: none; background: #fafafa; transition: 0.2s; }
+        .input-group input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(0,168,107,0.1); }
+        
+        .btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,168,107,0.2); }
+        .btn:active { background: var(--secondary); transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,168,107,0.2); }
+        .toggle-link { text-align: center; margin-top: 18px; color: var(--primary); cursor: pointer; font-size: 0.95rem; font-weight: bold; padding: 10px;}
+        .forgot-link { text-align: right; margin-top: -10px; margin-bottom: 15px; color: var(--primary); cursor: pointer; font-size: 0.85rem; font-weight: 600; padding: 5px;}
+
+        .balance-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; padding: 25px; color: white; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0, 168, 107, 0.25); position: relative; overflow: hidden; }
+        .balance-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        
+        .balance-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; position: relative; z-index: 2;}
+        .balance-header h3 { font-weight: 500; font-size: 1.05rem; opacity: 0.9; margin: 0; }
+        .refresh-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; display: flex; align-items: center; gap: 5px;}
+        .refresh-btn:active { background: rgba(255,255,255,0.4); transform: scale(0.95);}
+        .refresh-btn i { font-size: 0.8rem; }
+        
+        .balance-card h1 { font-size: 2.6rem; margin: 5px 0 15px 0; font-weight: 700; position: relative; z-index: 2;}
+        .stats-row { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; position: relative; z-index: 2;}
+        .stat-box { text-align: center; width: 48%; }
+        .stat-box span { font-size: 0.85rem; opacity: 0.9; }
+        .stat-box h4 { font-size: 1.2rem; font-weight: 600; margin-top: 4px;}
+
+        .action-buttons-row { display: flex; gap: 15px; margin-bottom: 25px; }
+        .action-btn { flex: 1; padding: 14px; border-radius: 16px; font-size: 1rem; font-weight: bold; border: none; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
+        .action-btn:active { transform: scale(0.95); }
+        .action-btn.deposit { background: var(--primary); }
+        .action-btn.withdraw { background: #2c3e50; }
+
+        .section-title { font-size: 1.15rem; margin-bottom: 15px; color: var(--text-main); font-weight: 700; }
+        .history-item { background: var(--card); padding: 16px; border-radius: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 4px solid var(--primary); gap: 10px; }
+        .history-item.withdraw { border-left-color: #e74c3c; }
+        .history-item.pending { border-left-color: #f39c12; }
+        .history-info { flex: 1; min-width: 0; } 
+        .history-info h4 { font-size: 1.05rem; color: var(--text-main); font-weight: 600; margin-bottom: 3px; }
+        .history-info p { font-size: 0.85rem; color: var(--text-light); word-wrap: break-word; } 
+        .history-amount { font-weight: bold; font-size: 1.2rem; color: var(--primary); white-space: nowrap; text-align: right; } 
+        .withdraw .history-amount { color: #e74c3c; }
+
+        /* 🔹 FULL WIDTH BOTTOM NAV 🔹 */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: var(--card); display: flex; justify-content: space-around; 
+            padding: 10px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 100; 
+            border-top-left-radius: 20px; border-top-right-radius: 20px; 
+            padding-bottom: max(10px, env(safe-area-inset-bottom)); 
+        }
+        .nav-item { text-align: center; color: #a0a0a0; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex: 1; padding: 5px 0;}
+        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; transition: transform 0.2s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active i { transform: translateY(-3px); }
+
+        .profile-card { background: var(--card); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee;}
+        .profile-avatar { width: 60px; height: 60px; background: rgba(0,168,107,0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+        .profile-details { flex: 1; }
+        .profile-details h2 { font-size: 1.2rem; color: var(--text-main); margin-bottom: 4px; }
+        .profile-details p { font-size: 0.9rem; color: var(--text-light); font-weight: 500;}
+
+        .manage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .manage-card { background: var(--card); padding: 25px 15px; text-align: center; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.2s;}
+        .manage-card:active { transform: scale(0.95); }
+        .manage-card i { font-size: 2.2rem; color: var(--primary); margin-bottom: 12px; display: block;}
+        .manage-card h4 { font-size: 1rem; color: var(--text-main); font-weight: 600; }
+
+        .refer-box { background: var(--card); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .refer-code { font-size: 2rem; font-weight: bold; color: var(--primary); letter-spacing: 3px; margin: 20px 0; border: 2px dashed rgba(0,168,107,0.3); padding: 15px; border-radius: 15px; background: rgba(0,168,107,0.03); }
+
+        /* 🔹 FULL WIDTH MODALS & FORMS 🔹 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal-box { background: white; padding: 30px; border-radius: 24px; width: 85%; max-width: 320px; text-align: center; animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .modal-box i.icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
+        .modal-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; color: var(--text-main); }
+        .modal-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; }
+        .modal-btn { background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .form-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-radius: 30px 30px 0 0; padding: 25px 20px; z-index: 1500; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); animation: slideUp 0.3s cubic-bezier(0.1, 0.8, 0.3, 1); height: 85vh; overflow-y: auto; padding-bottom: max(25px, env(safe-area-inset-bottom));}
+        .form-modal::before { content: ''; display: block; width: 50px; height: 5px; background: #e0e0e0; border-radius: 10px; margin: 0 auto 25px auto; }
+        .close-form { position: absolute; right: 25px; top: 25px; font-size: 1.5rem; color: #aaa; cursor: pointer; background: #f4f6f9; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
+        .spinner { border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .sticky-history {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0; 
+            background-color: var(--bg);
+            z-index: 95;
+            margin: -15px -15px 10px -15px; 
+            padding: 15px 15px 5px 15px;
+        }
+
+        .history-filters { display:flex; gap:10px; overflow-x:auto; padding-bottom:5px; margin-bottom:5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .history-filters::-webkit-scrollbar { display: none; }
+        .history-filters .btn { width: auto; flex: 1 0 auto; margin: 0; padding: 12px 18px; font-size: 0.9rem; background: var(--card); color: var(--text-main); border: 1.5px solid #eee; border-radius: 30px; white-space: nowrap; box-shadow: none; font-weight: 600;}
+        .history-filters .btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,168,107,0.2); }
+
+        .qr-container { text-align: center; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 15px;}
+        .qr-container img { max-width: 180px; border-radius: 10px; padding: 10px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
+        .upi-text { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin-top: 12px; letter-spacing: 1px;}
+    </style>
+</head>
+<body>
+
+    <div class="app-bar" id="appBarTitle">Login</div>
+    <div class="loader-overlay" id="loader"><div class="spinner"></div></div>
+
+    <div class="modal-overlay" id="alertModal">
+        <div class="modal-box">
+            <i class="fas fa-check-circle icon" id="alertIcon"></i>
+            <div class="modal-title" id="alertTitle">Success</div>
+            <div class="modal-desc" id="alertDesc">Action completed!</div>
+            <button class="modal-btn" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <!-- LOGIN PAGE -->
+    <div id="pageLogin" class="page active">
+        <div class="auth-container">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Welcome Back!</h2>
+            <div class="input-group"><label>Mobile Number or User ID</label><input type="text" id="loginId" placeholder="Enter ID or Mobile"></div>
+            <div class="input-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter Password"></div>
+            
+            <div class="forgot-link" onclick="switchPage('pageForgot', 'Forgot Password')">Forgot Password?</div>
+            
+            <button class="btn" onclick="handleLogin()" style="margin-top: 10px;">Login Securely</button>
+            <div class="toggle-link" onclick="switchPage('pageRegister', 'Register')">Don't have an account? Register</div>
+        </div>
+    </div>
+
+    <!-- FORGOT PASSWORD PAGE -->
+    <div id="pageForgot" class="page">
+        <div class="auth-container">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Forgot Password</h2>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Enter your registered Mobile Number or User ID to recover your password.</p>
+            <div class="input-group"><label>Mobile Number or User ID</label><input type="text" id="forgotId" placeholder="Enter ID or Mobile"></div>
+            
+            <button class="btn" onclick="handleForgotPass()" style="margin-top: 10px;">Show Password</button>
+            <div class="toggle-link" onclick="switchPage('pageLogin', 'Login')">Back to Login</div>
+        </div>
+    </div>
+
+    <!-- REGISTER PAGE -->
+    <div id="pageRegister" class="page">
+        <div class="auth-container">
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Create Account</h2>
+            <div class="input-group"><label>Full Name</label><input type="text" id="regName"></div>
+            <div class="input-group"><label>Mobile Number</label><input type="number" id="regMobile"></div>
+            <div class="input-group"><label>Email</label><input type="email" id="regEmail"></div>
+            <div class="input-group"><label>Password</label><input type="password" id="regPass"></div>
+            <div class="input-group"><label>Referral Code (Optional)</label><input type="text" id="regReferral"></div>
+            <button class="btn" onclick="handleRegister()" style="margin-top: 10px;">Register Now</button>
+            <div class="toggle-link" onclick="switchPage('pageLogin', 'Login')">Already have an account? Login</div>
+        </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="pageHome" class="page">
+        <div class="balance-card">
+            <div class="balance-header">
+                <h3>Total Balance</h3>
+                <button class="refresh-btn" onclick="loadDashboard()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <h1 id="homeBalance">₹0.00</h1>
+            <div class="stats-row">
+                <div class="stat-box"><span>Total Deposit</span><h4 id="homeDep">₹0.00</h4></div>
+                <div class="stat-box"><span>Total Earning</span><h4 id="homeEarn">₹0.00</h4></div>
+            </div>
+        </div>
+
+        <div class="action-buttons-row">
+            <button class="action-btn deposit" onclick="openForm('depositForm')">
+                <i class="fas fa-wallet"></i> Deposit
+            </button>
+            <button class="action-btn withdraw" onclick="openForm('withdrawForm')">
+                <i class="fas fa-hand-holding-usd"></i> Withdraw
+            </button>
+        </div>
+
+        <h3 class="section-title">Recent Earning History</h3>
+        <div id="homeRecentEarnings"></div>
+    </div>
+
+    <!-- REFER PAGE -->
+    <div id="pageRefer" class="page">
+        <div class="refer-box">
+            <h3>Your Referral Code</h3>
+            <div class="refer-code" id="myReferCode">---</div>
+            <button class="btn" onclick="shareReferral()"><i class="fas fa-share-nodes"></i> Share Link</button>
+        </div>
+        <div class="stats-row" style="background: var(--card); padding: 20px; border-radius: 20px; margin-bottom: 20px; border:none; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+            <div class="stat-box" style="color:var(--text-main);"><span>Total Referrals</span><h4 id="refCount">0</h4></div>
+            <div class="stat-box" style="color:var(--text-main);"><span>Commission</span><h4 id="refComm" style="color: var(--primary);">₹0.00</h4></div>
+        </div>
+        <h3 class="section-title">Referral Commission History</h3>
+        <div id="referHistoryList"></div>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div id="pageHistory" class="page">
+        <div class="sticky-history">
+            <div class="profile-card" style="margin-bottom: 15px; padding: 15px;">
+                <div class="profile-avatar" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fas fa-user"></i></div>
+                <div class="profile-details">
+                    <h2 id="profNameHist" style="font-size: 1.1rem;">User</h2>
+                    <p style="font-size: 0.85rem;">ID: <span id="profIdHist">---</span></p>
+                </div>
+            </div>
+
+            <div class="history-filters">
+                <button class="btn active" onclick="renderHistory('all', this)">All</button>
+                <button class="btn" onclick="renderHistory('deposits', this)">Deposit</button>
+                <button class="btn" onclick="renderHistory('withdrawals', this)">Withdrawal</button>
+                <button class="btn" onclick="renderHistory('earnings', this)">Earning</button>
+            </div>
+        </div>
+
+        <div id="mainHistoryList"></div>
+    </div>
+
+    <!-- MANAGE PAGE -->
+    <div id="pageManage" class="page">
+        <div class="profile-card">
+            <div class="profile-avatar"><i class="fas fa-user"></i></div>
+            <div class="profile-details">
+                <h2 id="profName">User</h2>
+                <p>ID: <span id="profId">---</span></p>
+            </div>
+        </div>
+
+        <div class="manage-grid">
+            <div class="manage-card" onclick="openForm('depositForm')">
+                <i class="fas fa-wallet"></i><h4>Deposit Funds</h4>
+            </div>
+            <div class="manage-card" onclick="openForm('withdrawForm')">
+                <i class="fas fa-hand-holding-usd"></i><h4>Withdraw Funds</h4>
+            </div>
+            <div class="manage-card" onclick="openForm('kycForm')">
+                <i class="fas fa-building-columns"></i><h4>Update KYC</h4>
+            </div>
+            <div class="manage-card" onclick="logout()">
+                <i class="fas fa-power-off" style="color:#e74c3c;"></i><h4>Logout</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- DEPOSIT MODAL -->
+    <div class="form-modal" id="depositForm">
+        <div class="close-form" onclick="closeForm('depositForm')"><i class="fas fa-times"></i></div>
+        <h3 style="margin-bottom: 20px; color:var(--text-main); font-size:1.5rem;">Deposit Funds</h3>
+        <div class="input-group">
+            <label>1. Enter Amount to Deposit (₹)</label>
+            <input type="number" id="depAmount" oninput="updateDepositQR(this.value)" placeholder="Enter amount here">
+        </div>
+        <div class="qr-container">
+            <img id="paymentQr" src="" alt="Payment QR">
+            <div class="upi-text" id="upiDisplay"></div>
+            <p style="font-size:0.85rem; margin-top:8px; color:var(--text-light);">Scan QR & Pay exact amount</p>
+        </div>
+        <div class="input-group">
+            <label>2. Enter UTR / Reference No (12 Digit)</label>
+            <input type="text" id="depUtr" placeholder="After payment, enter UTR">
+        </div>
+        <button class="btn" onclick="submitDeposit()" style="margin-top: 10px;">Submit Request</button>
+    </div>
+
+    <!-- WITHDRAWAL MODAL -->
+    <div class="form-modal" id="withdrawForm">
+        <div class="close-form" onclick="closeForm('withdrawForm')"><i class="fas fa-times"></i></div>
+        <h3 style="margin-bottom: 20px; color:var(--text-main); font-size:1.5rem;">Withdraw Funds</h3>
+        <div class="input-group"><label>Withdrawal Amount (₹)</label><input type="number" id="withAmount" placeholder="Enter amount"></div>
+        <button class="btn" onclick="submitWithdrawal()" style="margin-top: 10px;">Submit Request</button>
+    </div>
+
+    <!-- KYC MODAL -->
+    <div class="form-modal" id="kycForm">
+        <div class="close-form" onclick="closeForm('kycForm')"><i class="fas fa-times"></i></div>
+        <h3 style="margin-bottom: 20px; color:var(--text-main); font-size:1.5rem;">Bank/UPI KYC</h3>
+        <div class="input-group"><label>Bank Name</label><input type="text" id="kycBank" placeholder="e.g. SBI, HDFC"></div>
+        <div class="input-group"><label>Account Number</label><input type="number" id="kycAccount" placeholder="Enter Account Number"></div>
+        <div class="input-group"><label>IFSC Code</label><input type="text" id="kycIfsc" placeholder="Enter IFSC"></div>
+        <div class="input-group"><label>UPI ID</label><input type="text" id="kycUpi" placeholder="e.g. name@upi"></div>
+        <button class="btn" onclick="submitKyc()" style="margin-top: 10px;">Submit KYC</button>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav" id="bottomNav" style="display: none;">
+        <div class="nav-item active" onclick="navTab('pageHome', this, 'Dashboard')"><i class="fas fa-home"></i>Home</div>
+        <div class="nav-item" onclick="navTab('pageRefer', this, 'Refer')"><i class="fas fa-users"></i>Refer</div>
+        <div class="nav-item" onclick="navTab('pageHistory', this, 'All History')"><i class="fas fa-list-alt"></i>History</div>
+        <div class="nav-item" onclick="navTab('pageManage', this, 'Manage')"><i class="fas fa-user-cog"></i>Manage</div>
+    </div>
+
+    <script>
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtuE8atCZFybexL6BNfaWHqJl8UL85HNq_W58ac6iVKoFaY3VzX7p4WN7wPoBjqlXbDw/exec"; 
+
+        let currentUser = null;
+        let currentUserName = "User"; 
+        let userDataCache = null;
+
+        window.onload = function() {
+            let savedUser = localStorage.getItem("fintech_uid");
+            let savedName = localStorage.getItem("fintech_name");
+            if(savedUser) {
+                currentUser = savedUser;
+                if(savedName && savedName !== "undefined" && savedName !== "null") {
+                    currentUserName = savedName;
+                }
+                loadDashboard();
+            }
+        };
+
+        function showLoader() { document.getElementById('loader').style.display = 'flex'; }
+        function hideLoader() { document.getElementById('loader').style.display = 'none'; }
+        
+        function customAlert(title, message, isSuccess = true, customIcon = null) {
+            document.getElementById('alertTitle').innerText = title;
+            document.getElementById('alertDesc').innerHTML = message;
+            let icon = document.getElementById('alertIcon');
+            if(customIcon) { icon.className = customIcon + " icon"; icon.style.color = "var(--primary)"; } 
+            else if(isSuccess) { icon.className = "fas fa-check-circle icon"; icon.style.color = "var(--primary)"; } 
+            else { icon.className = "fas fa-exclamation-circle icon"; icon.style.color = "#e74c3c"; }
+            document.getElementById('alertModal').style.display = 'flex';
+        }
+        function closeAlert() { document.getElementById('alertModal').style.display = 'none'; }
+
+        function switchPage(pageId, title = "Login") {
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+                p.scrollTop = 0; 
+            });
+            document.getElementById(pageId).classList.add('active');
+            document.getElementById('appBarTitle').innerText = title;
+        }
+
+        function navTab(pageId, elm, title, filterType = 'all') {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(elm) elm.classList.add('active');
+            switchPage(pageId, title);
+            
+            if(pageId === 'pageHistory') {
+                let btns = document.querySelectorAll('.history-filters .btn');
+                let targetBtn = Array.from(btns).find(b => b.innerText.toLowerCase().includes(filterType.split('s')[0].toLowerCase()));
+                if(!targetBtn) targetBtn = btns[0];
+                renderHistory(filterType, targetBtn);
+            }
+        }
+
+        function openForm(id) {
+            document.getElementById('alertModal').style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+            if(id == 'depositForm') { updateDepositQR(document.getElementById('depAmount').value); }
+        }
+        function closeForm(id) { document.getElementById(id).style.display = 'none'; }
+
+        async function apiCall(action, payload, successCallback) {
+            showLoader();
+            try {
+                let qs = "?action=" + action + "&data=" + encodeURIComponent(JSON.stringify(payload));
+                let response = await fetch(BACKEND_URL + qs, { method: 'GET', redirect: 'follow' });
+                let text = await response.text();
+                
+                hideLoader();
+                try {
+                    let result = JSON.parse(text);
+                    if (result.success === false && result.message) {
+                        customAlert("Notice", result.message, false);
+                    } else {
+                        successCallback(result);
+                    }
+                } catch(e) {
+                    console.error("Parse Error:", text);
+                }
+            } catch (err) {
+                hideLoader();
+                customAlert("Network Error", "Unable to connect to Server. Check connection.", false);
+            }
+        }
+
+        function handleForgotPass() {
+            let id = document.getElementById('forgotId').value;
+            if(!id) return customAlert("Error", "Please enter Mobile Number or User ID", false);
+            
+            apiCall('forgotPassword', { loginId: id }, function(res) {
+                if(res.success) {
+                    let msg = `<b>Password Found!</b><br><br>Your Password is: <b>${res.password}</b><br><br><i>Please log in securely.</i>`;
+                    customAlert("Success", msg, true, "fas fa-lock-open");
+                    document.getElementById('forgotId').value = "";
+                } else {
+                    customAlert("Failed", res.message, false);
+                }
+            });
+        }
+
+        function handleRegister() {
+            let data = {
+                name: document.getElementById('regName').value,
+                mobile: document.getElementById('regMobile').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value,
+                referral: document.getElementById('regReferral').value
+            };
+            if(!data.name || !data.mobile || !data.password) return customAlert("Error", "Name, Mobile & Password required", false);
+            
+            apiCall('registerUser', data, function(res) {
+                if(res.success) {
+                    let msg = `<b>Registration Successful!</b><br><br><b>User ID:</b> ${res.uid}<br><b>Password:</b> ${res.password}<br><br><i>Take a screenshot!</i>`;
+                    customAlert("Welcome!", msg, true, "fas fa-user-check");
+                    currentUser = res.uid;
+                    currentUserName = res.name;
+                    localStorage.setItem("fintech_uid", currentUser);
+                    localStorage.setItem("fintech_name", currentUserName);
+                    loadDashboard();
+                } else customAlert("Failed", res.message, false);
+            });
+        }
+
+        function handleLogin() {
+            let id = document.getElementById('loginId').value;
+            let pass = document.getElementById('loginPass').value;
+            if(!id || !pass) return customAlert("Error", "Credentials required", false);
+            
+            apiCall('loginUser', { loginId: id, password: pass }, function(res) {
+                if(res.success) {
+                    currentUser = res.uid;
+                    currentUserName = res.name;
+                    localStorage.setItem("fintech_uid", currentUser);
+                    localStorage.setItem("fintech_name", currentUserName);
+                    loadDashboard();
+                } else customAlert("Failed", res.message, false);
+            });
+        }
+
+        function parseDateString(dStr) {
+            if(!dStr) return 0;
+            try {
+                let parts = dStr.split(' | ');
+                let dParts = parts[0].split('-');
+                let timeStr = parts[1];
+                let formatted = `${dParts[1]}/${dParts[0]}/${dParts[2]} ${timeStr}`;
+                return new Date(formatted).getTime() || 0;
+            } catch(e) {
+                return 0;
+            }
+        }
+
+        function loadDashboard() {
+            apiCall('getUserData', { uid: currentUser }, function(res) {
+                if(res && res.success) {
+                    userDataCache = res;
+                    document.getElementById('bottomNav').style.display = 'flex';
+                    switchPage('pageHome', 'Dashboard');
+
+                    if(res.userName && res.userName !== "") {
+                        currentUserName = res.userName;
+                        localStorage.setItem("fintech_name", currentUserName);
+                    }
+
+                    document.getElementById('profName').innerText = currentUserName;
+                    document.getElementById('profId').innerText = currentUser;
+                    if(document.getElementById('profNameHist')) document.getElementById('profNameHist').innerText = currentUserName;
+                    if(document.getElementById('profIdHist')) document.getElementById('profIdHist').innerText = currentUser;
+
+                    if(res.settings && res.settings['Global Notification Pop-up']) {
+                        let popupMsg = String(res.settings['Global Notification Pop-up']);
+                        if(!sessionStorage.getItem('notif_shown') && popupMsg.trim() !== "") {
+                            customAlert("Notification", popupMsg, true, "fas fa-bell");
+                            sessionStorage.setItem('notif_shown', 'true');
+                        }
+                    }
+
+                    document.getElementById('homeBalance').innerText = '₹' + (res.balances.totalBalance || 0).toFixed(2);
+                    document.getElementById('homeDep').innerText = '₹' + (res.balances.totalDeposit || 0).toFixed(2);
+                    document.getElementById('homeEarn').innerText = '₹' + (res.balances.totalEarning || 0).toFixed(2);
+
+                    let earnHtml = "";
+                    let allEarnings = (res.history.earnings || []).slice();
+                    allEarnings.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
+                    
+                    if(allEarnings.length == 0) {
+                        earnHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No earnings yet</p>";
+                    } else {
+                        let top3Earnings = allEarnings.slice(0, 3);
+                        top3Earnings.forEach(e => { 
+                            let rem = e.remark && String(e.remark).trim() !== "" ? String(e.remark) : "Earnings Credited";
+                            earnHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+₹${e.amount}</div></div>`; 
+                        });
+                        
+                        if(allEarnings.length > 3) {
+                            earnHtml += `<button class="btn" style="background:var(--secondary); margin-top:10px; font-size:0.95rem; font-weight:600; box-shadow:none;" onclick="navTab('pageHistory', document.querySelectorAll('.nav-item')[2], 'All History', 'earnings')">Show More Recent Earnings</button>`;
+                        }
+                    }
+                    document.getElementById('homeRecentEarnings').innerHTML = earnHtml;
+
+                    document.getElementById('myReferCode').innerText = currentUser;
+                    document.getElementById('refCount').innerText = res.balances.totalRefCount || 0; 
+                    document.getElementById('refComm').innerText = '₹' + (res.balances.totalReferral || 0).toFixed(2);
+
+                    let referHtml = "";
+                    let refArr = (res.history.referrals || []).slice();
+                    refArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
+
+                    if(refArr.length == 0) {
+                        referHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No referral commissions</p>";
+                    } else {
+                        let top4Refs = refArr.slice(0, 4);
+                        top4Refs.forEach(e => { 
+                            let rem = e.remark && String(e.remark).trim() !== "" ? String(e.remark) : "Referral Bonus";
+                            referHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+₹${e.amount}</div></div>`; 
+                        });
+                        if(refArr.length > 4) referHtml += `<button class="btn" style="background:var(--secondary); margin-top:10px; font-size:0.95rem; font-weight:600; box-shadow:none;" onclick="navTab('pageHistory', document.querySelectorAll('.nav-item')[2], 'All History', 'referrals')">View More Referrals</button>`;
+                    }
+                    document.getElementById('referHistoryList').innerHTML = referHtml;
+                }
+            });
+        }
+
+        function updateDepositQR(amount) {
+            let upi = (userDataCache && userDataCache.settings) ? userDataCache.settings['ADMIN_UPI_ID'] : "";
+            if(!upi) return;
+            document.getElementById('upiDisplay').innerText = upi;
+            let upiString = `upi://pay?pa=${upi}&pn=AppAdmin&cu=INR`;
+            if(amount && amount > 0) upiString += `&am=${amount}`;
+            document.getElementById('paymentQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
+        }
+
+        function renderHistory(type, btnElement = null) {
+            if(!userDataCache) return;
+
+            if(btnElement) {
+                document.querySelectorAll('.history-filters .btn').forEach(b => b.classList.remove('active'));
+                btnElement.classList.add('active');
+            } else {
+                let btns = document.querySelectorAll('.history-filters .btn');
+                let targetBtn = Array.from(btns).find(b => b.innerText.toLowerCase().includes(type.split('s')[0].toLowerCase()));
+                if(targetBtn) {
+                    btns.forEach(b => b.classList.remove('active'));
+                    targetBtn.classList.add('active');
+                }
+            }
+
+            let dataArr = [];
+            
+            if (type === 'all') {
+                let dep = (userDataCache.history.transactions || []).filter(x => x.type=='Deposit').map(x => ({...x, _t: 'Deposit'}));
+                let wit = (userDataCache.history.transactions || []).filter(x => x.type=='Withdrawal').map(x => ({...x, _t: 'Withdrawal'}));
+                let kyc = (userDataCache.history.transactions || []).filter(x => x.type=='KYC').map(x => ({...x, _t: 'KYC'}));
+                let ern = (userDataCache.history.earnings || []).filter(x => x.type=='ROI').map(x => ({...x, _t: 'ROI Earning'}));
+                let ref = (userDataCache.history.earnings || []).filter(x => x.type=='Refferal' || x.type=='Referral').map(x => ({...x, _t: 'Referral Bonus'}));
+                dataArr = [...dep, ...wit, ...kyc, ...ern, ...ref];
+            } else if(type === 'deposits') { 
+                dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Deposit').map(x=>({...x, _t: 'Deposit'})); 
+            } else if(type === 'withdrawals') { 
+                dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Withdrawal').map(x=>({...x, _t: 'Withdrawal'})); 
+            } else if(type === 'earnings') { 
+                let ern = (userDataCache.history.earnings || []).filter(x => x.type=='ROI').map(x => ({...x, _t: 'ROI Earning'}));
+                let ref = (userDataCache.history.earnings || []).filter(x => x.type=='Refferal' || x.type=='Referral').map(x => ({...x, _t: 'Referral Bonus'}));
+                dataArr = [...ern, ...ref];
+            } else if (type === 'referrals') {
+                dataArr = (userDataCache.history.earnings||[]).filter(x => x.type=='Refferal' || x.type=='Referral').map(x=>({...x, _t: 'Referral Bonus'}));
+            }
+
+            dataArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
+
+            let html = "";
+            if(dataArr.length == 0) html = "<p style='text-align:center; padding:30px 20px; color:#999; font-size:1.1rem;'>No Records Found!</p>";
+            
+            dataArr.forEach(item => {
+                let statusColor = item.status == "Pending" ? "pending" : (item._t == "Withdrawal" ? "withdraw" : "");
+                let sign = (item._t == "Withdrawal" || item._t == "KYC") ? "" : "+";
+                let amountStr = item._t == "KYC" ? "KYC Update" : `${sign}₹${item.amount}`;
+                
+                let displayRemark = (item.remark && String(item.remark).trim() !== "") ? ' | ' + String(item.remark) : '';
+                
+                html += `<div class="history-item ${statusColor}">
+                            <div class="history-info">
+                                <h4>${item._t} ${item.status ? `(${item.status})` : ''}</h4>
+                                <p>${item.date || ''}${displayRemark}</p>
+                            </div>
+                            <div class="history-amount">${amountStr}</div>
+                         </div>`;
+            });
+            document.getElementById('mainHistoryList').innerHTML = html;
+        }
+
+        function submitDeposit() {
+            let amt = document.getElementById('depAmount').value;
+            let utr = document.getElementById('depUtr').value;
+            if(!amt || !utr) return customAlert("Warning", "Amount & UTR Required", false);
+            
+            closeForm('depositForm');
+            apiCall('submitDeposit', { uid: currentUser, amount: amt, utr: utr }, function(res) {
+                loadDashboard(); 
+                customAlert("Success", res.message, true);
+                document.getElementById('depAmount').value = ""; document.getElementById('depUtr').value = "";
+                updateDepositQR(""); 
+            });
+        }
+
+        function submitWithdrawal() {
+            let amt = document.getElementById('withAmount').value;
+            if(!amt || amt <= 0) return customAlert("Warning", "Enter valid amount", false);
+            if(parseFloat(amt) > userDataCache.balances.totalBalance) return customAlert("Failed", "Insufficient Balance!", false);
+
+            closeForm('withdrawForm');
+            apiCall('submitWithdrawal', { uid: currentUser, amount: amt }, function(res) {
+                loadDashboard();
+                customAlert("Status", res.message, res.success);
+                document.getElementById('withAmount').value = "";
+            });
+        }
+
+        function submitKyc() {
+            let bName = document.getElementById('kycBank').value;
+            let acc = document.getElementById('kycAccount').value;
+            let ifsc = document.getElementById('kycIfsc').value;
+            let upi = document.getElementById('kycUpi').value;
+            if(!bName || !acc || !ifsc) return customAlert("Error", "Bank Details required", false);
+
+            closeForm('kycForm');
+            apiCall('updateKYC', { uid: currentUser, bankName: bName, account: acc, ifsc: ifsc, upiId: upi }, function(res) {
+                customAlert("Updated", res.message, true);
+            });
+        }
+
+        function shareReferral() {
+            let link = `Register using my code: ${currentUser}\nApp Link: https://YOUR_GITHUB_PAGE_URL`;
+            if (navigator.share) navigator.share({ title: 'Fintech App', text: link }).catch(e=>{});
+            else { navigator.clipboard.writeText(link); customAlert("Copied", "Link copied!", true); }
+        }
+
+        function logout() {
+            currentUser = null; currentUserName = "User"; userDataCache = null;
+            localStorage.removeItem("fintech_uid"); 
+            localStorage.removeItem("fintech_name"); 
+            sessionStorage.removeItem("notif_shown");
+            document.getElementById('bottomNav').style.display = 'none';
+            document.getElementById('loginId').value = "";
+            document.getElementById('loginPass').value = "";
+            switchPage('pageLogin', 'Login');
+        }
+    </script>
+</body>
+</html>
