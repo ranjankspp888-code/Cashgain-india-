@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#00a86b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Cashgain</title></title>
+    <title>Cashgain</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root { --primary: #00a86b; --secondary: #008f5a; --bg: #f4f6f9; --card: #ffffff; --text-main: #333; --text-light: #777; }
@@ -184,7 +184,6 @@
             <div class="input-group"><label>Mobile Number or User ID</label><input type="text" id="loginId" placeholder="Enter ID or Mobile"></div>
             <div class="input-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter Password"></div>
             
-            <!-- Forgot Password Link Added Here -->
             <div class="forgot-link" onclick="switchPage('pageForgot', 'Forgot Password')">Forgot Password?</div>
             
             <button class="btn" onclick="handleLogin()" style="margin-top: 10px;">Login Securely</button>
@@ -192,7 +191,7 @@
         </div>
     </div>
 
-    <!-- FORGOT PASSWORD PAGE (NEW) -->
+    <!-- FORGOT PASSWORD PAGE -->
     <div id="pageForgot" class="page">
         <div class="auth-container">
             <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Forgot Password</h2>
@@ -221,7 +220,6 @@
     <!-- HOME PAGE -->
     <div id="pageHome" class="page">
         <div class="balance-card">
-            <!-- REFRESH BUTTON -->
             <div class="balance-header">
                 <h3>Total Balance</h3>
                 <button class="refresh-btn" onclick="loadDashboard()"><i class="fas fa-sync-alt"></i> Refresh</button>
@@ -233,7 +231,6 @@
             </div>
         </div>
 
-        <!-- 🔹 NEW ACTION BUTTONS BELOW BALANCE CARD 🔹 -->
         <div class="action-buttons-row">
             <button class="action-btn deposit" onclick="openForm('depositForm')">
                 <i class="fas fa-wallet"></i> Deposit
@@ -264,10 +261,7 @@
 
     <!-- HISTORY PAGE -->
     <div id="pageHistory" class="page">
-        
-        <!-- 🔹 STICKY HEADER CONTAINER (FIXED PROFILE & BUTTONS) 🔹 -->
         <div class="sticky-history">
-            <!-- USER PROFILE CARD (HISTORY) -->
             <div class="profile-card" style="margin-bottom: 15px; padding: 15px;">
                 <div class="profile-avatar" style="width: 50px; height: 50px; font-size: 1.5rem;"><i class="fas fa-user"></i></div>
                 <div class="profile-details">
@@ -276,7 +270,6 @@
                 </div>
             </div>
 
-            <!-- NAVIGATION BUTTONS -->
             <div class="history-filters">
                 <button class="btn active" onclick="renderHistory('all', this)">All</button>
                 <button class="btn" onclick="renderHistory('deposits', this)">Deposit</button>
@@ -290,8 +283,6 @@
 
     <!-- MANAGE PAGE -->
     <div id="pageManage" class="page">
-        
-        <!-- USER PROFILE CARD (MANAGE) -->
         <div class="profile-card">
             <div class="profile-avatar"><i class="fas fa-user"></i></div>
             <div class="profile-details">
@@ -364,23 +355,34 @@
     </div>
 
     <script>
-        // 🔹 UPDATE THIS URL TO YOUR NEW APPS SCRIPT URL 🔹
         const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtuE8atCZFybexL6BNfaWHqJl8UL85HNq_W58ac6iVKoFaY3VzX7p4WN7wPoBjqlXbDw/exec"; 
 
         let currentUser = null;
-        let currentUserName = "User"; // Default name
+        let currentUserName = "User";
         let userDataCache = null;
 
+        // 🔹 MODIFIED: window.onload TO AUTO-DETECT REFERRAL LINKS 🔹
         window.onload = function() {
             let savedUser = localStorage.getItem("fintech_uid");
             let savedName = localStorage.getItem("fintech_name");
-            if(savedUser) {
+            
+            // Check if there is a referral code in the URL (e.g. ?ref=USER123)
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+
+            if (savedUser) {
+                // If user is already logged in, redirect them to Dashboard normally
                 currentUser = savedUser;
                 if(savedName && savedName !== "undefined" && savedName !== "null") {
                     currentUserName = savedName;
                 }
                 loadDashboard();
+            } else if (refCode) {
+                // If not logged in and came from a refer link, open Register Page & Auto-fill code
+                document.getElementById('regReferral').value = refCode;
+                switchPage('pageRegister', 'Register');
             }
+            // else: Do nothing, let the default Login page show
         };
 
         function showLoader() { document.getElementById('loader').style.display = 'flex'; }
@@ -398,7 +400,6 @@
         function closeAlert() { document.getElementById('alertModal').style.display = 'none'; }
 
         function switchPage(pageId, title = "Login") {
-            // Restore window scroll position when switching tabs to avoid jerky scrolling
             window.scrollTo(0, 0); 
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -449,7 +450,6 @@
             }
         }
 
-        // 🔹 NEW FORGOT PASSWORD LOGIC 🔹
         function handleForgotPass() {
             let id = document.getElementById('forgotId').value;
             if(!id) return customAlert("Error", "Please enter Mobile Number or User ID", false);
@@ -458,7 +458,7 @@
                 if(res.success) {
                     let msg = `<b>Password Found!</b><br><br>Your Password is: <b>${res.password}</b><br><br><i>Please log in securely.</i>`;
                     customAlert("Success", msg, true, "fas fa-lock-open");
-                    document.getElementById('forgotId').value = ""; // clear field
+                    document.getElementById('forgotId').value = ""; 
                 } else {
                     customAlert("Failed", res.message, false);
                 }
@@ -529,7 +529,6 @@
                         localStorage.setItem("fintech_name", currentUserName);
                     }
 
-                    // 🔹 PROPERLY SET USER NAME IN PROFILE DOM (Manage & History) 🔹
                     document.getElementById('profName').innerText = currentUserName;
                     document.getElementById('profId').innerText = currentUser;
                     if(document.getElementById('profNameHist')) document.getElementById('profNameHist').innerText = currentUserName;
@@ -700,10 +699,22 @@
             });
         }
 
+        // 🔹 MODIFIED: shareReferral() TO INCLUDE IMPRESSIVE TEXT AND NATIVE SHARE MENU 🔹
         function shareReferral() {
-            let link = `Register using my code: ${currentUser}\nApp Link: https://ranjankspp888-code.github.io/Cashgain-india-/`;
-            if (navigator.share) navigator.share({ title: 'Fintech App', text: link }).catch(e=>{});
-            else { navigator.clipboard.writeText(link); customAlert("Copied", "Link copied!", true); }
+            let appUrl = `https://ranjankspp888-code.github.io/Cashgain-india-/?ref=${currentUser}`;
+            let shareMessage = `🚀 Join me on Cashgain and start earning daily rewards! 💸\n\nIt's a secure platform to grow your income easily. Don't miss out on this opportunity!\n\n👉 Click the link below to register directly (My Referral Code is Auto-Applied):\n${appUrl}`;
+            
+            // This triggers the Mobile Native Share Menu (WhatsApp, Facebook, SMS, etc.)
+            if (navigator.share) {
+                navigator.share({ 
+                    title: 'Join Cashgain Today!', 
+                    text: shareMessage 
+                }).catch(e => { console.log("Share cancelled or failed", e); });
+            } else { 
+                // Fallback for older browsers / desktop
+                navigator.clipboard.writeText(shareMessage); 
+                customAlert("Copied", "Impressive Referral message copied to clipboard!", true); 
+            }
         }
 
         function logout() {
