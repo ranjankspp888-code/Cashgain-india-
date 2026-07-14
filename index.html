@@ -17,12 +17,12 @@
         body { 
             background-color: var(--bg); 
             color: var(--text-main); 
-            padding-bottom: 80px; /* Space for bottom nav */
-            user-select: none; /* Prevents text selection like native apps */
+            padding-bottom: 80px; 
+            user-select: none; 
             -webkit-user-select: none;
-            overscroll-behavior-y: none; /* Prevents pull-to-refresh bounce */
+            overscroll-behavior-y: none; 
         }
-        input, .refer-code, .upi-text { user-select: text; -webkit-user-select: text; } /* Allow text selection only where needed */
+        input, .refer-code, .upi-text { user-select: text; -webkit-user-select: text; }
 
         /* App Bar */
         .app-bar { 
@@ -36,7 +36,7 @@
             position: sticky; 
             top: 0; 
             z-index: 100;
-            padding-top: max(18px, env(safe-area-inset-top)); /* iPhone Notch Support */
+            padding-top: max(18px, env(safe-area-inset-top)); 
         }
 
         /* Page Transitions */
@@ -51,7 +51,7 @@
         .input-group input { width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px; font-size: 1rem; outline: none; background: #fafafa; transition: 0.2s; }
         .input-group input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(0,168,107,0.1); }
         
-        /* Buttons with tactile feedback */
+        /* Buttons */
         .btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,168,107,0.2); }
         .btn:active { background: var(--secondary); transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,168,107,0.2); }
         .toggle-link { text-align: center; margin-top: 18px; color: var(--primary); cursor: pointer; font-size: 0.95rem; font-weight: bold; padding: 10px;}
@@ -61,7 +61,6 @@
         .balance-card { background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; padding: 25px; color: white; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0, 168, 107, 0.25); position: relative; overflow: hidden; }
         .balance-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
         
-        /* 🔹 REFRESH BUTTON CSS 🔹 */
         .balance-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; position: relative; z-index: 2;}
         .balance-header h3 { font-weight: 500; font-size: 1.05rem; opacity: 0.9; margin: 0; }
         .refresh-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 10px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; display: flex; align-items: center; gap: 5px;}
@@ -74,7 +73,7 @@
         .stat-box span { font-size: 0.85rem; opacity: 0.9; }
         .stat-box h4 { font-size: 1.2rem; font-weight: 600; margin-top: 4px;}
 
-        /* 🔹 NEW CSS: HOME PAGE ACTION BUTTONS 🔹 */
+        /* Action Buttons */
         .action-buttons-row { display: flex; gap: 15px; margin-bottom: 25px; }
         .action-btn { flex: 1; padding: 14px; border-radius: 16px; font-size: 1rem; font-weight: bold; border: none; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.08); }
         .action-btn:active { transform: scale(0.95); }
@@ -88,18 +87,22 @@
         .history-item.pending { border-left-color: #f39c12; }
         .history-info { flex: 1; min-width: 0; } 
         .history-info h4 { font-size: 1.05rem; color: var(--text-main); font-weight: 600; margin-bottom: 3px; }
-        .history-info p { font-size: 0.85rem; color: var(--text-light); word-wrap: break-word; } 
-        .history-amount { font-weight: bold; font-size: 1.2rem; color: var(--primary); white-space: nowrap; text-align: right; } 
+        .history-info p { font-size: 0.85rem; color: var(--text-light); word-wrap: break-word; margin-bottom: 5px; } 
+        .history-amount { font-weight: bold; font-size: 1.2rem; color: var(--primary); white-space: nowrap; text-align: right; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;} 
         .withdraw .history-amount { color: #e74c3c; }
+        
+        /* WhatsApp Button Customizer */
+        .wa-btn { background-color: #25D366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-top: 5px;}
+        .wa-btn:active { transform: scale(0.95); }
 
-        /* Bottom Navigation (Native App Style) */
+        /* Bottom Navigation */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: var(--card); display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 100; border-top-left-radius: 20px; border-top-right-radius: 20px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
         .nav-item { text-align: center; color: #a0a0a0; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex: 1; padding: 5px 0;}
         .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 5px; transition: transform 0.2s; }
         .nav-item.active { color: var(--primary); }
         .nav-item.active i { transform: translateY(-3px); }
 
-        /* 🔹 USER PROFILE CARD 🔹 */
+        /* User Profile Card */
         .profile-card { background: var(--card); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee;}
         .profile-avatar { width: 60px; height: 60px; background: rgba(0,168,107,0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
         .profile-details { flex: 1; }
@@ -122,13 +125,12 @@
         .modal-box { background: white; padding: 30px; border-radius: 24px; width: 85%; max-width: 320px; text-align: center; animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .modal-box i.icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
         .modal-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; color: var(--text-main); }
-        .modal-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; }
+        .modal-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; word-wrap: break-word;}
         .modal-btn { background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* Bottom Sheet Modal (Mobile App Style Forms) */
+        /* Bottom Sheet Modal */
         .form-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-radius: 30px 30px 0 0; padding: 25px 20px; z-index: 1500; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); animation: slideUp 0.3s cubic-bezier(0.1, 0.8, 0.3, 1); height: 85vh; overflow-y: auto; padding-bottom: max(25px, env(safe-area-inset-bottom));}
-        /* Mobile App Drag Handle */
         .form-modal::before { content: ''; display: block; width: 50px; height: 5px; background: #e0e0e0; border-radius: 10px; margin: 0 auto 25px auto; }
         .close-form { position: absolute; right: 25px; top: 25px; font-size: 1.5rem; color: #aaa; cursor: pointer; background: #f4f6f9; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -138,19 +140,9 @@
         .spinner { border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* 🔹 NEW CSS: STICKY HISTORY HEADER 🔹 */
-        .sticky-history {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 56px; /* Sits right under the app bar */
-            background-color: var(--bg);
-            z-index: 95;
-            margin: -15px -15px 10px -15px; /* Offset the .page padding */
-            padding: 15px 15px 5px 15px;
-        }
-        @supports (padding-top: env(safe-area-inset-top)) {
-            .sticky-history { top: calc(56px + env(safe-area-inset-top)); }
-        }
+        /* Sticky History Header */
+        .sticky-history { position: -webkit-sticky; position: sticky; top: 56px; background-color: var(--bg); z-index: 95; margin: -15px -15px 10px -15px; padding: 15px 15px 5px 15px; }
+        @supports (padding-top: env(safe-area-inset-top)) { .sticky-history { top: calc(56px + env(safe-area-inset-top)); } }
 
         /* History Navigation Filters */
         .history-filters { display:flex; gap:10px; overflow-x:auto; padding-bottom:5px; margin-bottom:5px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -195,10 +187,10 @@
     <div id="pageForgot" class="page">
         <div class="auth-container">
             <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Forgot Password</h2>
-            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Enter your registered Mobile Number or User ID to recover your password.</p>
-            <div class="input-group"><label>Mobile Number or User ID</label><input type="text" id="forgotId" placeholder="Enter ID or Mobile"></div>
+            <p style="text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Enter your registered Mobile Number or Email to recover your password.</p>
+            <div class="input-group"><label>Mobile Number or Email</label><input type="text" id="forgotId" placeholder="Enter Mobile or Email"></div>
             
-            <button class="btn" onclick="handleForgotPass()" style="margin-top: 10px;">Show Password</button>
+            <button class="btn" onclick="handleForgotPass()" style="margin-top: 10px;">Send Password</button>
             <div class="toggle-link" onclick="switchPage('pageLogin', 'Login')">Back to Login</div>
         </div>
     </div>
@@ -255,7 +247,7 @@
             <div class="stat-box" style="color:var(--text-main);"><span>Total Referrals</span><h4 id="refCount">0</h4></div>
             <div class="stat-box" style="color:var(--text-main);"><span>Commission</span><h4 id="refComm" style="color: var(--primary);">₹0.00</h4></div>
         </div>
-        <h3 class="section-title">Referral Commission History</h3>
+        <h3 class="section-title">Referral User History</h3>
         <div id="referHistoryList"></div>
     </div>
 
@@ -301,38 +293,56 @@
             <div class="manage-card" onclick="openForm('kycForm')">
                 <i class="fas fa-building-columns"></i><h4>Update KYC</h4>
             </div>
+            <!-- SUPPORT OPTION ADDED HERE -->
+            <div class="manage-card" onclick="window.open('https://wa.me/918873903209', '_blank')">
+                <i class="fab fa-whatsapp" style="color:#25D366;"></i><h4>Support</h4>
+            </div>
             <div class="manage-card" onclick="logout()">
                 <i class="fas fa-power-off" style="color:#e74c3c;"></i><h4>Logout</h4>
             </div>
         </div>
     </div>
 
-    <!-- DEPOSIT MODAL -->
-    <div class="form-modal" id="depositForm">
+    <!-- DEPOSIT MODAL (COMPACT & PROFESSIONAL WITH QR LOADER) -->
+    <div class="form-modal" id="depositForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('depositForm')"><i class="fas fa-times"></i></div>
-        <h3 style="margin-bottom: 20px; color:var(--text-main); font-size:1.5rem;">Deposit Funds</h3>
-        <div class="input-group">
-            <label>1. Enter Amount to Deposit (₹)</label>
-            <input type="number" id="depAmount" oninput="updateDepositQR(this.value)" placeholder="Enter amount here">
+        <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.3rem; font-weight: 700;">Deposit Funds</h3>
+        
+        <div class="input-group" style="margin-bottom: 10px;">
+            <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 6px;">1. Enter Amount to Deposit (₹)</label>
+            <input type="number" id="depAmount" oninput="updateDepositQR(this.value)" placeholder="₹0" style="text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 10px; border-radius: 12px; background: rgba(0, 168, 107, 0.05); border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0, 168, 107, 0.1);">
         </div>
-        <div class="qr-container">
-            <img id="paymentQr" src="" alt="Payment QR">
-            <div class="upi-text" id="upiDisplay"></div>
-            <p style="font-size:0.85rem; margin-top:8px; color:var(--text-light);">Scan QR & Pay exact amount</p>
+        
+        <div class="qr-container" style="margin-top: 10px; margin-bottom: 15px; padding: 12px; background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #eee;">
+            <!-- QR Loader Indicator -->
+            <div id="qrLoader" style="display: none; justify-content: center; margin: 40px 0;">
+                <div class="spinner"></div>
+            </div>
+            <!-- QR Code Image (Size 180px, auto-hide loader when completely loaded) -->
+            <img id="paymentQr" src="" alt="Payment QR" style="max-width: 180px; margin-bottom: 5px; display: none;" onload="document.getElementById('qrLoader').style.display='none'; this.style.display='inline-block';">
+            <div class="upi-text" id="upiDisplay" style="font-size: 1rem; margin-top: 5px;"></div>
+            <p style="font-size:0.8rem; margin-top:5px; color:var(--text-light); font-weight: 500;">Scan QR & Pay exact amount</p>
         </div>
-        <div class="input-group">
-            <label>2. Enter UTR / Reference No (12 Digit)</label>
-            <input type="text" id="depUtr" placeholder="After payment, enter UTR">
+        
+        <div class="input-group" style="margin-bottom: 10px;">
+            <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px;">2. Enter UTR / Reference No (12 Digit)</label>
+            <input type="text" id="depUtr" placeholder="Enter 12-digit UTR here" style="text-align: center; font-size: 1rem; font-weight: 700; letter-spacing: 1px; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd;">
         </div>
-        <button class="btn" onclick="submitDeposit()" style="margin-top: 10px;">Submit Request</button>
+        
+        <button class="btn" onclick="submitDeposit()" style="margin-top: 5px; font-size: 1.05rem; padding: 12px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
-    <!-- WITHDRAWAL MODAL -->
-    <div class="form-modal" id="withdrawForm">
+    <!-- WITHDRAWAL MODAL (UPDATED WITH TOTAL WITHDRAWAL AMOUNT) -->
+    <div class="form-modal" id="withdrawForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('withdrawForm')"><i class="fas fa-times"></i></div>
-        <h3 style="margin-bottom: 20px; color:var(--text-main); font-size:1.5rem;">Withdraw Funds</h3>
-        <div class="input-group"><label>Withdrawal Amount (₹)</label><input type="number" id="withAmount" placeholder="Enter amount"></div>
-        <button class="btn" onclick="submitWithdrawal()" style="margin-top: 10px;">Submit Request</button>
+        <h3 style="margin-bottom: 5px; color:var(--text-main); font-size:1.5rem; font-weight: 700;">Withdraw Funds</h3>
+        <p style="color: var(--primary); font-weight: 600; font-size: 1rem; margin-bottom: 20px;">Total Withdrawn: <span id="modalTotalWithdraw">₹0.00</span></p>
+        
+        <div class="input-group" style="text-align: left;">
+            <label style="font-weight: 600;">Withdrawal Amount (₹)</label>
+            <input type="number" id="withAmount" placeholder="Enter amount" style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">
+        </div>
+        <button class="btn" onclick="submitWithdrawal()" style="margin-top: 10px; padding: 14px; font-size: 1.1rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
     <!-- KYC MODAL -->
@@ -355,34 +365,30 @@
     </div>
 
     <script>
-        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbxtuE8atCZFybexL6BNfaWHqJl8UL85HNq_W58ac6iVKoFaY3VzX7p4WN7wPoBjqlXbDw/exec"; 
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbwZjhZBlmv9sFsIGTBiD82qGouYQzkuwszWM1yyo7Yay_h7pmwxT1wwcYEDA6JdUtsSOg/exec"; 
 
         let currentUser = null;
         let currentUserName = "User";
         let userDataCache = null;
 
-        // 🔹 MODIFIED: window.onload TO AUTO-DETECT REFERRAL LINKS 🔹
         window.onload = function() {
+            hideLoader(); // Make sure global loader is hidden on startup
             let savedUser = localStorage.getItem("fintech_uid");
             let savedName = localStorage.getItem("fintech_name");
             
-            // Check if there is a referral code in the URL (e.g. ?ref=USER123)
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
 
             if (savedUser) {
-                // If user is already logged in, redirect them to Dashboard normally
                 currentUser = savedUser;
                 if(savedName && savedName !== "undefined" && savedName !== "null") {
                     currentUserName = savedName;
                 }
                 loadDashboard();
             } else if (refCode) {
-                // If not logged in and came from a refer link, open Register Page & Auto-fill code
                 document.getElementById('regReferral').value = refCode;
                 switchPage('pageRegister', 'Register');
             }
-            // else: Do nothing, let the default Login page show
         };
 
         function showLoader() { document.getElementById('loader').style.display = 'flex'; }
@@ -450,14 +456,29 @@
             }
         }
 
+        function maskEmailOrMobile(inputStr) {
+            if(!inputStr) return "";
+            if (inputStr.includes('@')) {
+                let parts = inputStr.split('@');
+                let name = parts[0];
+                let domain = parts[1];
+                let maskedName = name.length > 2 ? name.substring(0, 2) + "XXXXXX" : "XX";
+                return maskedName + "@" + domain;
+            } else {
+                return inputStr.length > 4 ? "XXXXXX" + inputStr.substring(inputStr.length - 4) : inputStr;
+            }
+        }
+
         function handleForgotPass() {
             let id = document.getElementById('forgotId').value;
-            if(!id) return customAlert("Error", "Please enter Mobile Number or User ID", false);
+            if(!id) return customAlert("Error", "Please enter Mobile Number or Email", false);
             
             apiCall('forgotPassword', { loginId: id }, function(res) {
                 if(res.success) {
-                    let msg = `<b>Password Found!</b><br><br>Your Password is: <b>${res.password}</b><br><br><i>Please log in securely.</i>`;
-                    customAlert("Success", msg, true, "fas fa-lock-open");
+                    let emailString = res.email || id; 
+                    let masked = maskEmailOrMobile(emailString);
+                    let msg = `<b>आपके रजिस्टर्ड ईमेल पर पासवर्ड भेज दिया गया है।</b><br><br>${masked}`;
+                    customAlert("Sent Successfully", msg, true, "fas fa-envelope-circle-check");
                     document.getElementById('forgotId').value = ""; 
                 } else {
                     customAlert("Failed", res.message, false);
@@ -545,6 +566,11 @@
                     document.getElementById('homeBalance').innerText = '₹' + (res.balances.totalBalance || 0).toFixed(2);
                     document.getElementById('homeDep').innerText = '₹' + (res.balances.totalDeposit || 0).toFixed(2);
                     document.getElementById('homeEarn').innerText = '₹' + (res.balances.totalEarning || 0).toFixed(2);
+                    
+                    // Update Total Withdraw in the Withdraw Modal
+                    if(document.getElementById('modalTotalWithdraw')) {
+                        document.getElementById('modalTotalWithdraw').innerText = '₹' + (res.balances.totalWithdrawal || 0).toFixed(2);
+                    }
 
                     let earnHtml = "";
                     let allEarnings = (res.history.earnings || []).slice();
@@ -575,14 +601,27 @@
                     refArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
 
                     if(refArr.length == 0) {
-                        referHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No referral commissions</p>";
+                        referHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No referrals yet</p>";
                     } else {
-                        let top4Refs = refArr.slice(0, 4);
-                        top4Refs.forEach(e => { 
-                            let rem = e.remark && String(e.remark).trim() !== "" ? String(e.remark) : "Referral Bonus";
-                            referHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+₹${e.amount}</div></div>`; 
+                        refArr.forEach(e => { 
+                            let mobile = e.mobile || ""; 
+                            let waLink = e.whatsappLink ? `<a href="${e.whatsappLink}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : (mobile ? `<a href="https://wa.me/91${mobile}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : '');
+                            
+                            let uName = e.name || "Referred User";
+                            let uID = e.uid || "Unknown ID";
+                            let rDate = e.date || "";
+                            
+                            referHtml += `
+                            <div class="history-item">
+                                <div class="history-info" style="width: 100%;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <h4 style="margin-bottom: 0;">${uName} <span style="font-size:0.8rem; color:#888;">(${uID})</span></h4>
+                                        ${waLink}
+                                    </div>
+                                    <p style="margin-bottom: 0; margin-top: 4px;">${rDate}</p>
+                                </div>
+                            </div>`; 
                         });
-                        if(refArr.length > 4) referHtml += `<button class="btn" style="background:var(--secondary); margin-top:10px; font-size:0.95rem; font-weight:600; box-shadow:none;" onclick="navTab('pageHistory', document.querySelectorAll('.nav-item')[2], 'All History', 'referrals')">View More Referrals</button>`;
                     }
                     document.getElementById('referHistoryList').innerHTML = referHtml;
                 }
@@ -595,6 +634,12 @@
             document.getElementById('upiDisplay').innerText = upi;
             let upiString = `upi://pay?pa=${upi}&pn=AppAdmin&cu=INR`;
             if(amount && amount > 0) upiString += `&am=${amount}`;
+            
+            // Show loader, hide image temporarily
+            document.getElementById('qrLoader').style.display = 'flex';
+            document.getElementById('paymentQr').style.display = 'none';
+            
+            // Set image source (this will trigger the onload event in HTML when ready)
             document.getElementById('paymentQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
         }
 
@@ -632,8 +677,6 @@
                 let ern = (userDataCache.history.earnings || []).filter(x => x.type=='ROI').map(x => ({...x, _t: 'ROI Earning'}));
                 let ref = (userDataCache.history.earnings || []).filter(x => x.type=='Refferal' || x.type=='Referral').map(x => ({...x, _t: 'Referral Bonus'}));
                 dataArr = [...ern, ...ref];
-            } else if (type === 'referrals') {
-                dataArr = (userDataCache.history.earnings||[]).filter(x => x.type=='Refferal' || x.type=='Referral').map(x=>({...x, _t: 'Referral Bonus'}));
             }
 
             dataArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
@@ -674,15 +717,20 @@
         }
 
         function submitWithdrawal() {
-            let amt = document.getElementById('withAmount').value;
+            let amt = parseFloat(document.getElementById('withAmount').value);
             if(!amt || amt <= 0) return customAlert("Warning", "Enter valid amount", false);
-            if(parseFloat(amt) > userDataCache.balances.totalBalance) return customAlert("Failed", "Insufficient Balance!", false);
+            if(amt > userDataCache.balances.totalBalance) return customAlert("Failed", "Insufficient Balance!", false);
 
             closeForm('withdrawForm');
+            
             apiCall('submitWithdrawal', { uid: currentUser, amount: amt }, function(res) {
-                loadDashboard();
-                customAlert("Status", res.message, res.success);
+                userDataCache.balances.totalBalance -= amt;
+                document.getElementById('homeBalance').innerText = '₹' + userDataCache.balances.totalBalance.toFixed(2);
+                
+                customAlert("Pending", "Withdrawal Request Submitted. Balance Deducted.", true, "fas fa-clock");
                 document.getElementById('withAmount').value = "";
+                
+                loadDashboard(); 
             });
         }
 
@@ -699,19 +747,16 @@
             });
         }
 
-        // 🔹 MODIFIED: shareReferral() TO INCLUDE IMPRESSIVE TEXT AND NATIVE SHARE MENU 🔹
         function shareReferral() {
             let appUrl = `https://ranjankspp888-code.github.io/Cashgain-india-/?ref=${currentUser}`;
             let shareMessage = `🚀 Join me on Cashgain and start earning daily rewards! 💸\n\nIt's a secure platform to grow your income easily. Don't miss out on this opportunity!\n\n👉 Click the link below to register directly (My Referral Code is Auto-Applied):\n${appUrl}`;
             
-            // This triggers the Mobile Native Share Menu (WhatsApp, Facebook, SMS, etc.)
             if (navigator.share) {
                 navigator.share({ 
                     title: 'Join Cashgain Today!', 
                     text: shareMessage 
                 }).catch(e => { console.log("Share cancelled or failed", e); });
             } else { 
-                // Fallback for older browsers / desktop
                 navigator.clipboard.writeText(shareMessage); 
                 customAlert("Copied", "Impressive Referral message copied to clipboard!", true); 
             }
