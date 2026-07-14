@@ -309,7 +309,7 @@
         <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.3rem; font-weight: 700;">Deposit Funds</h3>
         
         <div class="input-group" style="margin-bottom: 10px;">
-            <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 6px;">1. Enter Amount to Deposit (₹)</label>
+            <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 6px;"> Enter Amount to Deposit (₹)</label>
             <input type="number" id="depAmount" oninput="updateDepositQR(this.value)" placeholder="₹0" style="text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 10px; border-radius: 12px; background: rgba(0, 168, 107, 0.05); border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0, 168, 107, 0.1);">
         </div>
         
@@ -325,24 +325,33 @@
         </div>
         
         <div class="input-group" style="margin-bottom: 10px;">
-            <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px;">2. Enter UTR / Reference No (12 Digit)</label>
+            <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px;"> Enter UTR / Reference No (12 Digit)</label>
             <input type="text" id="depUtr" placeholder="Enter 12-digit UTR here" style="text-align: center; font-size: 1rem; font-weight: 700; letter-spacing: 1px; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd;">
         </div>
         
         <button class="btn" onclick="submitDeposit()" style="margin-top: 5px; font-size: 1.05rem; padding: 12px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
-    <!-- WITHDRAWAL MODAL (UPDATED WITH TOTAL WITHDRAWAL AMOUNT) -->
+    <!-- WITHDRAWAL MODAL (UPDATED WITH CARD UI & CENTER ALIGNED) -->
     <div class="form-modal" id="withdrawForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('withdrawForm')"><i class="fas fa-times"></i></div>
-        <h3 style="margin-bottom: 5px; color:var(--text-main); font-size:1.5rem; font-weight: 700;">Withdraw Funds</h3>
-        <p style="color: var(--primary); font-weight: 600; font-size: 1rem; margin-bottom: 20px;">Total Withdrawn: <span id="modalTotalWithdraw">₹0.00</span></p>
+        <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.4rem; font-weight: 700;">Withdraw Funds</h3>
         
-        <div class="input-group" style="text-align: left;">
-            <label style="font-weight: 600;">Withdrawal Amount (₹)</label>
-            <input type="number" id="withAmount" placeholder="Enter amount" style="font-size: 1.2rem; font-weight: bold; color: var(--primary);">
+        <!-- Withdrawal Card Container -->
+        <div style="background: white; padding: 25px 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee; margin-bottom: 20px;">
+            
+            <p style="color: var(--text-light); font-weight: 600; font-size: 0.95rem; margin-bottom: 5px;">Total Withdrawal</p>
+            <h2 id="modalTotalWithdraw" style="color: var(--primary); font-size: 2rem; margin-bottom: 25px; font-weight: 800;">₹0.00</h2>
+            
+            <div class="input-group" style="margin-bottom: 0;">
+                <label style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 10px;">Enter Withdrawal Amount (₹)</label>
+                <!-- Red styled input for withdrawal -->
+                <input type="number" id="withAmount" placeholder="₹0" style="text-align: center; font-size: 1.6rem; font-weight: 800; color: #e74c3c; padding: 12px; border-radius: 12px; background: rgba(231, 76, 60, 0.05); border: 2px solid #e74c3c; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);">
+            </div>
+            
         </div>
-        <button class="btn" onclick="submitWithdrawal()" style="margin-top: 10px; padding: 14px; font-size: 1.1rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
+
+        <button class="btn" onclick="submitWithdrawal()" style="font-size: 1.1rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
     <!-- KYC MODAL -->
@@ -628,6 +637,7 @@
             });
         }
 
+        // --- UPDATED QR CODE FUNCTION ---
         function updateDepositQR(amount) {
             let upi = (userDataCache && userDataCache.settings) ? userDataCache.settings['ADMIN_UPI_ID'] : "";
             if(!upi) return;
