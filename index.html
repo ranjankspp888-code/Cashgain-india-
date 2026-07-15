@@ -374,7 +374,7 @@
     </div>
 
     <script>
-        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbyfaYd_lrWPcZwuO0a7mblTwfwRvIFZRwY5hfJRMtHD_ECSnHzSyeTd0A32sl7FX9L9CA/exec"; 
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTHUkCiX4v0O1eraHEC8niI4TMUjFQkizYp--Sz4cGzmBct6obWxkg4GrP4RU97Fs/exec"; 
 
         let currentUser = null;
         let currentUserName = "User";
@@ -400,10 +400,15 @@
             }
         };
 
-        function showLoader() { document.getElementById('loader').style.display = 'flex'; }
+        // BUG FIX: Alert के खुले होने पर पीछे से Loader शो नहीं होगा
+        function showLoader() { 
+            if(document.getElementById('alertModal').style.display === 'flex') return;
+            document.getElementById('loader').style.display = 'flex'; 
+        }
         function hideLoader() { document.getElementById('loader').style.display = 'none'; }
         
         function customAlert(title, message, isSuccess = true, customIcon = null) {
+            hideLoader(); // BUG FIX: Alert खुलते ही Loader को छुपने का कमांड
             document.getElementById('alertTitle').innerText = title;
             document.getElementById('alertDesc').innerHTML = message;
             let icon = document.getElementById('alertIcon');
@@ -574,7 +579,12 @@
 
                     document.getElementById('homeBalance').innerText = '₹' + (res.balances.totalBalance || 0).toFixed(2);
                     document.getElementById('homeDep').innerText = '₹' + (res.balances.totalDeposit || 0).toFixed(2);
-                    document.getElementById('homeEarn').innerText = '₹' + (res.balances.totalEarning || 0).toFixed(2);
+                    
+                    // -- Total Earning + Total Referral --
+                    let roiEarning = res.balances.totalEarning || 0;
+                    let refEarning = res.balances.totalReferral || 0;
+                    let combinedEarning = roiEarning + refEarning;
+                    document.getElementById('homeEarn').innerText = '₹' + combinedEarning.toFixed(2);
                     
                     // Update Total Withdraw in the Withdraw Modal
                     if(document.getElementById('modalTotalWithdraw')) {
