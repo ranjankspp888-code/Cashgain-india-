@@ -293,9 +293,8 @@
             <div class="manage-card" onclick="openForm('kycForm')">
                 <i class="fas fa-building-columns"></i><h4>Update KYC</h4>
             </div>
-            <!-- SUPPORT OPTION ADDED HERE -->
-            <div class="manage-card" onclick="window.open('https://wa.me/918873903209', '_blank')">
-                <i class="fab fa-whatsapp" style="color:#25D366;"></i><h4>Support</h4>
+            <div class="manage-card" onclick="openEmailSupport()">
+                <i class="fas fa-envelope" style="color:#3498db;"></i><h4>Email Support</h4>
             </div>
             <div class="manage-card" onclick="logout()">
                 <i class="fas fa-power-off" style="color:#e74c3c;"></i><h4>Logout</h4>
@@ -303,7 +302,7 @@
         </div>
     </div>
 
-    <!-- DEPOSIT MODAL (COMPACT & PROFESSIONAL WITH QR LOADER) -->
+    <!-- DEPOSIT MODAL -->
     <div class="form-modal" id="depositForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('depositForm')"><i class="fas fa-times"></i></div>
         <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.3rem; font-weight: 700;">Deposit Funds</h3>
@@ -332,7 +331,7 @@
         <button class="btn" onclick="submitDeposit()" style="margin-top: 5px; font-size: 1.05rem; padding: 12px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
-    <!-- WITHDRAWAL MODAL (UPDATED WITH CARD UI & CENTER ALIGNED) -->
+    <!-- WITHDRAWAL MODAL -->
     <div class="form-modal" id="withdrawForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('withdrawForm')"><i class="fas fa-times"></i></div>
         <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.4rem; font-weight: 700;">Withdraw Funds</h3>
@@ -374,14 +373,15 @@
     </div>
 
     <script>
-        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbzTHUkCiX4v0O1eraHEC8niI4TMUjFQkizYp--Sz4cGzmBct6obWxkg4GrP4RU97Fs/exec"; 
+        const BACKEND_URL = "https://script.google.com/macros/s/AKfycbx5OTOpXk8tVvuYqpGOPZHqImSMElOOCo1VCa-kecC6z0yGURjYogRLFNpoF0gJzrCYLA/exec"; 
 
         let currentUser = null;
         let currentUserName = "User";
         let userDataCache = null;
+        let lastDataHash = ""; // SMOOTH AUTO-REFRESH KE LIYE HASH TRACKER
 
         window.onload = function() {
-            hideLoader(); // Make sure global loader is hidden on startup
+            hideLoader(); 
             let savedUser = localStorage.getItem("fintech_uid");
             let savedName = localStorage.getItem("fintech_name");
             
@@ -400,7 +400,6 @@
             }
         };
 
-        // BUG FIX: Alert के खुले होने पर पीछे से Loader शो नहीं होगा
         function showLoader() { 
             if(document.getElementById('alertModal').style.display === 'flex') return;
             document.getElementById('loader').style.display = 'flex'; 
@@ -408,7 +407,7 @@
         function hideLoader() { document.getElementById('loader').style.display = 'none'; }
         
         function customAlert(title, message, isSuccess = true, customIcon = null) {
-            hideLoader(); // BUG FIX: Alert खुलते ही Loader को छुपने का कमांड
+            hideLoader(); 
             document.getElementById('alertTitle').innerText = title;
             document.getElementById('alertDesc').innerHTML = message;
             let icon = document.getElementById('alertIcon');
@@ -446,18 +445,19 @@
         }
         function closeForm(id) { document.getElementById(id).style.display = 'none'; }
 
-        async function apiCall(action, payload, successCallback) {
-            showLoader();
+        // IS SILENT PARAMETER ADDED FOR SMOOTH BACKGROUND REFRESH
+        async function apiCall(action, payload, successCallback, isSilent = false) {
+            if(!isSilent) showLoader();
             try {
                 let qs = "?action=" + action + "&data=" + encodeURIComponent(JSON.stringify(payload));
                 let response = await fetch(BACKEND_URL + qs, { method: 'GET', redirect: 'follow' });
                 let text = await response.text();
                 
-                hideLoader();
+                if(!isSilent) hideLoader();
                 try {
                     let result = JSON.parse(text);
                     if (result.success === false && result.message) {
-                        customAlert("Notice", result.message, false);
+                        if(!isSilent) customAlert("Notice", result.message, false);
                     } else {
                         successCallback(result);
                     }
@@ -465,8 +465,8 @@
                     console.error("Parse Error:", text);
                 }
             } catch (err) {
-                hideLoader();
-                customAlert("Network Error", "Unable to connect to Server. Check connection.", false);
+                if(!isSilent) hideLoader();
+                if(!isSilent) customAlert("Network Error", "Unable to connect to Server. Check connection.", false);
             }
         }
 
@@ -552,12 +552,23 @@
             }
         }
 
-        function loadDashboard() {
+        // IS SILENT LOGIC ADDED HERE TO PREVENT SCREEN JUMPS/FLICKERING
+        function loadDashboard(isSilent = false) {
             apiCall('getUserData', { uid: currentUser }, function(res) {
                 if(res && res.success) {
+                    
+                    // SMOOTH REFRESH CHECK: Agar data pehle jaisa hi hai, to screen update mat karo
+                    let currentDataHash = JSON.stringify(res);
+                    if(isSilent && lastDataHash === currentDataHash) {
+                        return; // Data has not changed, silently exit without refreshing DOM
+                    }
+                    lastDataHash = currentDataHash;
                     userDataCache = res;
-                    document.getElementById('bottomNav').style.display = 'flex';
-                    switchPage('pageHome', 'Dashboard');
+
+                    if(!isSilent) {
+                        document.getElementById('bottomNav').style.display = 'flex';
+                        switchPage('pageHome', 'Dashboard');
+                    }
 
                     if(res.userName && res.userName !== "") {
                         currentUserName = res.userName;
@@ -572,21 +583,21 @@
                     if(res.settings && res.settings['Global Notification Pop-up']) {
                         let popupMsg = String(res.settings['Global Notification Pop-up']);
                         if(!sessionStorage.getItem('notif_shown') && popupMsg.trim() !== "") {
-                            customAlert("Notification", popupMsg, true, "fas fa-bell");
-                            sessionStorage.setItem('notif_shown', 'true');
+                            if(!isSilent) {
+                                customAlert("Notification", popupMsg, true, "fas fa-bell");
+                                sessionStorage.setItem('notif_shown', 'true');
+                            }
                         }
                     }
 
                     document.getElementById('homeBalance').innerText = '₹' + (res.balances.totalBalance || 0).toFixed(2);
                     document.getElementById('homeDep').innerText = '₹' + (res.balances.totalDeposit || 0).toFixed(2);
                     
-                    // -- Total Earning + Total Referral --
                     let roiEarning = res.balances.totalEarning || 0;
                     let refEarning = res.balances.totalReferral || 0;
                     let combinedEarning = roiEarning + refEarning;
                     document.getElementById('homeEarn').innerText = '₹' + combinedEarning.toFixed(2);
                     
-                    // Update Total Withdraw in the Withdraw Modal
                     if(document.getElementById('modalTotalWithdraw')) {
                         document.getElementById('modalTotalWithdraw').innerText = '₹' + (res.balances.totalWithdrawal || 0).toFixed(2);
                     }
@@ -643,11 +654,24 @@
                         });
                     }
                     document.getElementById('referHistoryList').innerHTML = referHtml;
+
+                    // Automatically update history page if it's currently open and data changed
+                    if(document.getElementById('pageHistory').classList.contains('active')) {
+                        let btns = document.querySelectorAll('.history-filters .btn');
+                        let activeBtn = Array.from(btns).find(b => b.classList.contains('active'));
+                        if (activeBtn) {
+                            let fType = 'all';
+                            let t = activeBtn.innerText.toLowerCase();
+                            if(t.includes('deposit')) fType = 'deposits';
+                            else if(t.includes('withdraw')) fType = 'withdrawals';
+                            else if(t.includes('earning')) fType = 'earnings';
+                            renderHistory(fType, activeBtn);
+                        }
+                    }
                 }
-            });
+            }, isSilent);
         }
 
-        // --- UPDATED QR CODE FUNCTION ---
         function updateDepositQR(amount) {
             let upi = (userDataCache && userDataCache.settings) ? userDataCache.settings['ADMIN_UPI_ID'] : "";
             if(!upi) return;
@@ -655,11 +679,8 @@
             let upiString = `upi://pay?pa=${upi}&pn=AppAdmin&cu=INR`;
             if(amount && amount > 0) upiString += `&am=${amount}`;
             
-            // Show loader, hide image temporarily
             document.getElementById('qrLoader').style.display = 'flex';
             document.getElementById('paymentQr').style.display = 'none';
-            
-            // Set image source (this will trigger the onload event in HTML when ready)
             document.getElementById('paymentQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
         }
 
@@ -737,6 +758,11 @@
         }
 
         function submitWithdrawal() {
+            if (userDataCache && userDataCache.settings && userDataCache.settings['Withdrawal'] && String(userDataCache.settings['Withdrawal']).toLowerCase() === 'off') {
+                closeForm('withdrawForm');
+                return customAlert("Notice", "Withdrawal अभी बंद है कृपया बाद में पुनः प्रयास करे।", false);
+            }
+
             let amt = parseFloat(document.getElementById('withAmount').value);
             if(!amt || amt <= 0) return customAlert("Warning", "Enter valid amount", false);
             if(amt > userDataCache.balances.totalBalance) return customAlert("Failed", "Insufficient Balance!", false);
@@ -781,9 +807,17 @@
                 customAlert("Copied", "Impressive Referral message copied to clipboard!", true); 
             }
         }
+        
+        function openEmailSupport() {
+            let adminEmail = "your.email@gmail.com"; 
+            let subject = encodeURIComponent("Support Request - ID: " + currentUser);
+            let body = encodeURIComponent("User ID: " + currentUser + "\nName: " + currentUserName + "\n\nMy Query: \n");
+            
+            window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+        }
 
         function logout() {
-            currentUser = null; currentUserName = "User"; userDataCache = null;
+            currentUser = null; currentUserName = "User"; userDataCache = null; lastDataHash = "";
             localStorage.removeItem("fintech_uid"); 
             localStorage.removeItem("fintech_name"); 
             sessionStorage.removeItem("notif_shown");
@@ -792,6 +826,15 @@
             document.getElementById('loginPass').value = "";
             switchPage('pageLogin', 'Login');
         }
+
+        // AUTO REFRESH SYSTEM (Har 2.5 Second mein background update)
+        setInterval(() => {
+            // Check karega ki user logged in hai aur app phone ki screen par active (visible) hai
+            if(currentUser && document.visibilityState === 'visible') {
+                loadDashboard(true); // true = silent refresh (bina loader aur popup ke)
+            }
+        }, 2500);
+
     </script>
 </body>
 </html>
