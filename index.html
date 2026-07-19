@@ -44,20 +44,20 @@
             padding-top: max(18px, env(safe-area-inset-top)); 
         }
 
-        /* Page Transitions */
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease-out forwards; }
+        /* Page Transitions - Faster and Smoother */
+        .page { display: none; padding: 15px; animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards; will-change: transform, opacity; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Form Controls */
         .auth-container { max-width: 400px; margin: 30px auto; background: var(--card); padding: 25px; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); }
         .input-group { margin-bottom: 18px; }
         .input-group label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
-        .input-group input { width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px; font-size: 1rem; outline: none; background: #fafafa; transition: 0.2s; }
+        .input-group input { width: 100%; padding: 14px; border: 1.5px solid #eee; border-radius: 12px; font-size: 1rem; outline: none; background: #fafafa; transition: 0.2s ease; }
         .input-group input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(0,168,107,0.1); }
         
         /* Buttons */
-        .btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,168,107,0.2); }
+        .btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: all 0.15s ease; box-shadow: 0 4px 10px rgba(0,168,107,0.2); will-change: transform; }
         .btn:active { background: var(--secondary); transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,168,107,0.2); }
         .toggle-link { text-align: center; margin-top: 18px; color: var(--primary); cursor: pointer; font-size: 0.95rem; font-weight: bold; padding: 10px;}
         .forgot-link { text-align: right; margin-top: -10px; margin-bottom: 15px; color: var(--primary); cursor: pointer; font-size: 0.85rem; font-weight: 600; padding: 5px;}
@@ -97,7 +97,7 @@
         .withdraw .history-amount { color: #e74c3c; }
         
         /* WhatsApp Button Customizer */
-        .wa-btn { background-color: #25D366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-top: 5px;}
+        .wa-btn { background-color: #25D366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; margin-top: 5px; transition: transform 0.15s;}
         .wa-btn:active { transform: scale(0.95); }
 
         /* Bottom Navigation */
@@ -127,7 +127,7 @@
 
         /* Alert Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 2000; }
-        .modal-box { background: white; padding: 30px; border-radius: 24px; width: 85%; max-width: 320px; text-align: center; animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .modal-box { background: white; padding: 30px; border-radius: 24px; width: 85%; max-width: 320px; text-align: center; animation: zoomIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
         .modal-box i.icon { font-size: 3.5rem; color: var(--primary); margin-bottom: 15px; }
         .modal-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; color: var(--text-main); }
         .modal-desc { font-size: 0.95rem; color: var(--text-light); margin-bottom: 25px; line-height: 1.5; word-wrap: break-word;}
@@ -145,9 +145,9 @@
         .install-box { background: white; padding: 30px 20px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
         .ios-instruction { font-size: 0.9rem; background: #f8f9fa; padding: 12px; border-radius: 12px; border: 1.5px dashed #ccc; margin-bottom: 15px; color: var(--text-main); display: none;}
 
-        /* Loader */
+        /* Loader - Faster Spin */
         .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .spinner { border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; }
+        .spinner { border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.6s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Sticky History Header */
@@ -179,18 +179,17 @@
         </div>
     </div>
 
-    <!-- PWA INSTALL MODAL (NEW) -->
+    <!-- PWA INSTALL MODAL -->
     <div class="install-modal" id="installModal">
         <div class="install-box">
             <div class="close-form" onclick="closeInstallModal()" style="top: 15px; right: 15px; position: absolute;"><i class="fas fa-times"></i></div>
             
-            <!-- App Logo Icon -->
-            <div style="background: var(--primary); width: 75px; height: 75px; border-radius: 20px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; box-shadow: 0 5px 15px rgba(0,168,107,0.3);">
-                <b>CG</b>
+            <div style="background: var(--primary); width: 75px; height: 75px; border-radius: 20px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,168,107,0.3);">
+                CG
             </div>
             
             <h3 style="margin-bottom: 10px; color: var(--text-main); font-size: 1.4rem;">Install Cashgain App</h3>
-            <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px;">Get a faster, safer, and app-like experience directly on your Home Screen.</p>
+            <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px;">Get a faster, safer, and app-like experience directly on your Home Screen and App List.</p>
             
             <!-- iOS Specific Instruction -->
             <div class="ios-instruction" id="iosInstruction">
@@ -413,31 +412,74 @@
         let userDataCache = null;
         let lastDataHash = ""; 
 
-        // PWA Install Logic - GENERATES APP CAPABILITY ON THE FLY
+        // PWA Install Logic - GENERATING REAL PNG ICONS ON THE FLY FOR APP LIST (WEBAPK)
         let deferredPrompt;
         
-        function initPWA() {
-            // 1. Generate App Logo (CG) SVG Dynamically
-            const svgIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="%2300a86b"/><text x="50%" y="50%" font-family="Arial, sans-serif" font-weight="bold" font-size="220" fill="white" dominant-baseline="central" text-anchor="middle">CG</text></svg>`;
-            const iconDataUrl = 'data:image/svg+xml;charset=utf-8,' + svgIcon;
+        // This function draws the "CG" logo dynamically on an invisible canvas and converts it to a clean PNG Base64 image.
+        function createPngIcon(size) {
+            let canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            let ctx = canvas.getContext('2d');
             
-            // 2. Build manifest dynamically for GitHub Pages
+            // App Green Background
+            ctx.fillStyle = '#00a86b';
+            ctx.beginPath();
+            if(ctx.roundRect) {
+                ctx.roundRect(0, 0, size, size, size * 0.2); // Rounded corners
+            } else {
+                ctx.rect(0, 0, size, size); // Fallback for old browsers
+            }
+            ctx.fill();
+            
+            // White Text "CG"
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold ' + (size * 0.45) + 'px Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Adjusting text positioning slightly to make it look perfectly centered
+            ctx.fillText('CG', size / 2, (size / 2) + (size * 0.04));
+            
+            return canvas.toDataURL('image/png'); // Returning exactly a PNG required by Android App Drawer
+        }
+
+        function initPWA() {
+            // 1. Generate 192px and 512px PNG Icons dynamically
+            const icon192 = createPngIcon(192);
+            const icon512 = createPngIcon(512);
+            
+            // 2. Build manifest dynamically for GitHub Pages ensuring App Drawer compatibility
             const manifest = {
                 name: "Cashgain",
                 short_name: "Cashgain",
-                start_url: window.location.pathname,
+                start_url: window.location.href.split('?')[0], // Absolutely correct relative URL for scope
                 display: "standalone",
                 background_color: "#f4f6f9",
                 theme_color: "#00a86b",
-                icons: [{ src: iconDataUrl, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }]
+                icons: [
+                    { src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+                    { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+                ]
             };
             
-            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-            document.getElementById('manifest-link').href = URL.createObjectURL(manifestBlob);
+            const manifestString = JSON.stringify(manifest);
+            document.getElementById('manifest-link').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString));
 
-            // 3. Register a dummy Service Worker to satisfy Chrome PWA requirements
+            // Set Apple Touch Icon dynamically for iPhones
+            let appleIcon = document.createElement('link');
+            appleIcon.rel = 'apple-touch-icon';
+            appleIcon.href = icon192;
+            document.head.appendChild(appleIcon);
+
+            // 3. Register a proper dummy Service Worker to satisfy Android Chrome completely
             if ('serviceWorker' in navigator) {
-                const swCode = `self.addEventListener('install', (e) => self.skipWaiting()); self.addEventListener('activate', (e) => self.clients.claim()); self.addEventListener('fetch', (e) => {});`;
+                const swCode = `
+                    self.addEventListener('install', (e) => self.skipWaiting()); 
+                    self.addEventListener('activate', (e) => self.clients.claim()); 
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(fetch(e.request).catch(() => new Response('Offline')));
+                    });
+                `;
                 const swBlob = new Blob([swCode], { type: 'application/javascript' });
                 navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log('SW Error', err));
             }
@@ -447,7 +489,7 @@
                 e.preventDefault();
                 deferredPrompt = e;
                 if (!localStorage.getItem('pwa_declined')) {
-                    setTimeout(() => { document.getElementById('installModal').style.display = 'flex'; }, 2000);
+                    setTimeout(() => { document.getElementById('installModal').style.display = 'flex'; }, 1000); 
                 }
             });
 
@@ -459,7 +501,7 @@
                     document.getElementById('installBtn').style.display = 'none';
                     document.getElementById('iosInstruction').style.display = 'block';
                     document.getElementById('installModal').style.display = 'flex';
-                }, 2000);
+                }, 1000);
             }
         }
 
