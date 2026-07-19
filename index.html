@@ -214,7 +214,7 @@
         <div class="balance-card">
             <div class="balance-header">
                 <h3>Total Balance</h3>
-                <button class="refresh-btn" onclick="loadDashboard()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button class="refresh-btn" onclick="loadDashboard(false)"><i class="fas fa-sync-alt"></i> Refresh</button>
             </div>
             <h1 id="homeBalance">₹0.00</h1>
             <div class="stats-row">
@@ -317,7 +317,7 @@
             <div id="qrLoader" style="display: none; justify-content: center; margin: 40px 0;">
                 <div class="spinner"></div>
             </div>
-            <!-- QR Code Image (Size 180px, auto-hide loader when completely loaded) -->
+            <!-- QR Code Image -->
             <img id="paymentQr" src="" alt="Payment QR" style="max-width: 180px; margin-bottom: 5px; display: none;" onload="document.getElementById('qrLoader').style.display='none'; this.style.display='inline-block';">
             <div class="upi-text" id="upiDisplay" style="font-size: 1rem; margin-top: 5px;"></div>
             <p style="font-size:0.8rem; margin-top:5px; color:var(--text-light); font-weight: 500;">Scan QR & Pay exact amount</p>
@@ -379,6 +379,16 @@
         let currentUserName = "User";
         let userDataCache = null;
         let lastDataHash = ""; // SMOOTH AUTO-REFRESH KE LIYE HASH TRACKER
+
+        // भारतीय मुद्रा को फॉर्मेट करने का फ़ंक्शन
+        function formatINR(amount) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount || 0);
+        }
 
         window.onload = function() {
             hideLoader(); 
@@ -445,7 +455,6 @@
         }
         function closeForm(id) { document.getElementById(id).style.display = 'none'; }
 
-        // IS SILENT PARAMETER ADDED FOR SMOOTH BACKGROUND REFRESH
         async function apiCall(action, payload, successCallback, isSilent = false) {
             if(!isSilent) showLoader();
             try {
@@ -552,12 +561,11 @@
             }
         }
 
-        // IS SILENT LOGIC ADDED HERE TO PREVENT SCREEN JUMPS/FLICKERING
         function loadDashboard(isSilent = false) {
             apiCall('getUserData', { uid: currentUser }, function(res) {
                 if(res && res.success) {
                     
-                    // SMOOTH REFRESH CHECK: Agar data pehle jaisa hi hai, to screen update mat karo
+                    // SMOOTH REFRESH CHECK: Agar data pehle jaisa hi hai, to screen update मत करो
                     let currentDataHash = JSON.stringify(res);
                     if(isSilent && lastDataHash === currentDataHash) {
                         return; // Data has not changed, silently exit without refreshing DOM
@@ -590,16 +598,17 @@
                         }
                     }
 
-                    document.getElementById('homeBalance').innerText = '₹' + (res.balances.totalBalance || 0).toFixed(2);
-                    document.getElementById('homeDep').innerText = '₹' + (res.balances.totalDeposit || 0).toFixed(2);
+                    // Indian Currency Format Applied Here
+                    document.getElementById('homeBalance').innerText = formatINR(res.balances.totalBalance);
+                    document.getElementById('homeDep').innerText = formatINR(res.balances.totalDeposit);
                     
                     let roiEarning = res.balances.totalEarning || 0;
                     let refEarning = res.balances.totalReferral || 0;
                     let combinedEarning = roiEarning + refEarning;
-                    document.getElementById('homeEarn').innerText = '₹' + combinedEarning.toFixed(2);
+                    document.getElementById('homeEarn').innerText = formatINR(combinedEarning);
                     
                     if(document.getElementById('modalTotalWithdraw')) {
-                        document.getElementById('modalTotalWithdraw').innerText = '₹' + (res.balances.totalWithdrawal || 0).toFixed(2);
+                        document.getElementById('modalTotalWithdraw').innerText = formatINR(res.balances.totalWithdrawal);
                     }
 
                     let earnHtml = "";
@@ -613,7 +622,7 @@
                         let top3Earnings = allEarnings.slice(0, 3);
                         top3Earnings.forEach(e => { 
                             let rem = e.remark && String(e.remark).trim() !== "" ? String(e.remark) : "Earnings Credited";
-                            earnHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+₹${e.amount}</div></div>`; 
+                            earnHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+${formatINR(e.amount)}</div></div>`; 
                         });
                         
                         if(allEarnings.length > 3) {
@@ -624,7 +633,7 @@
 
                     document.getElementById('myReferCode').innerText = currentUser;
                     document.getElementById('refCount').innerText = res.balances.totalRefCount || 0; 
-                    document.getElementById('refComm').innerText = '₹' + (res.balances.totalReferral || 0).toFixed(2);
+                    document.getElementById('refComm').innerText = formatINR(res.balances.totalReferral);
 
                     let referHtml = "";
                     let refArr = (res.history.referrals || []).slice();
@@ -655,7 +664,6 @@
                     }
                     document.getElementById('referHistoryList').innerHTML = referHtml;
 
-                    // Automatically update history page if it's currently open and data changed
                     if(document.getElementById('pageHistory').classList.contains('active')) {
                         let btns = document.querySelectorAll('.history-filters .btn');
                         let activeBtn = Array.from(btns).find(b => b.classList.contains('active'));
@@ -728,7 +736,7 @@
             dataArr.forEach(item => {
                 let statusColor = item.status == "Pending" ? "pending" : (item._t == "Withdrawal" ? "withdraw" : "");
                 let sign = (item._t == "Withdrawal" || item._t == "KYC") ? "" : "+";
-                let amountStr = item._t == "KYC" ? "KYC Update" : `${sign}₹${item.amount}`;
+                let amountStr = item._t == "KYC" ? "KYC Update" : `${sign}${formatINR(item.amount)}`;
                 
                 let displayRemark = (item.remark && String(item.remark).trim() !== "") ? ' | ' + String(item.remark) : '';
                 
@@ -750,7 +758,7 @@
             
             closeForm('depositForm');
             apiCall('submitDeposit', { uid: currentUser, amount: amt, utr: utr }, function(res) {
-                loadDashboard(); 
+                loadDashboard(false); 
                 customAlert("Success", res.message, true);
                 document.getElementById('depAmount').value = ""; document.getElementById('depUtr').value = "";
                 updateDepositQR(""); 
@@ -771,12 +779,12 @@
             
             apiCall('submitWithdrawal', { uid: currentUser, amount: amt }, function(res) {
                 userDataCache.balances.totalBalance -= amt;
-                document.getElementById('homeBalance').innerText = '₹' + userDataCache.balances.totalBalance.toFixed(2);
+                document.getElementById('homeBalance').innerText = formatINR(userDataCache.balances.totalBalance);
                 
                 customAlert("Pending", "Withdrawal Request Submitted. Balance Deducted.", true, "fas fa-clock");
                 document.getElementById('withAmount').value = "";
                 
-                loadDashboard(); 
+                loadDashboard(false); 
             });
         }
 
@@ -828,10 +836,10 @@
         }
 
         // AUTO REFRESH SYSTEM (Har 2.5 Second mein background update)
+        // यह लॉजिक सबसे बेहतरीन है, क्योंकि Google Apps Script में डायरेक्ट WebSockets सपोर्ट नहीं होता।
         setInterval(() => {
-            // Check karega ki user logged in hai aur app phone ki screen par active (visible) hai
             if(currentUser && document.visibilityState === 'visible') {
-                loadDashboard(true); // true = silent refresh (bina loader aur popup ke)
+                loadDashboard(true); // true = silent refresh 
             }
         }, 2500);
 
