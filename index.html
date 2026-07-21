@@ -34,15 +34,13 @@
             background: var(--primary); 
             color: white; 
             padding: 18px 20px; 
-            text-align: center; 
-            font-size: 1.3rem; 
-            font-weight: 600; 
             box-shadow: 0 2px 10px rgba(0,168,107,0.2); 
             position: sticky; 
             top: 0; 
             z-index: 100;
             padding-top: max(18px, env(safe-area-inset-top)); 
         }
+        #appBarTitle { font-size: 1.3rem; font-weight: 600; }
 
         /* Page Transitions - Faster and Smoother */
         .page { display: none; padding: 15px; animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards; will-change: transform, opacity; }
@@ -108,7 +106,7 @@
         .nav-item.active i { transform: translateY(-3px); }
 
         /* User Profile Card */
-        .profile-card { background: var(--card); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee;}
+        .profile-card { background: var(--card); padding: 20px; border-radius: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee;}
         .profile-avatar { width: 60px; height: 60px; background: rgba(0,168,107,0.1); color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
         .profile-details { flex: 1; }
         .profile-details h2 { font-size: 1.2rem; color: var(--text-main); margin-bottom: 4px; }
@@ -134,18 +132,18 @@
         .modal-btn { background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        /* Bottom Sheet Modal */
+        /* Bottom Sheet Modal (For Withdraw & KYC) */
         .form-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); border-radius: 30px 30px 0 0; padding: 25px 20px; z-index: 1500; box-shadow: 0 -10px 25px rgba(0,0,0,0.1); animation: slideUp 0.3s cubic-bezier(0.1, 0.8, 0.3, 1); height: 85vh; overflow-y: auto; padding-bottom: max(25px, env(safe-area-inset-bottom));}
         .form-modal::before { content: ''; display: block; width: 50px; height: 5px; background: #e0e0e0; border-radius: 10px; margin: 0 auto 25px auto; }
         .close-form { position: absolute; right: 25px; top: 25px; font-size: 1.5rem; color: #aaa; cursor: pointer; background: #f4f6f9; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-        /* PWA Install App Modal (New) */
+        /* PWA Install App Modal */
         .install-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: flex-end; z-index: 4000; padding-bottom: 20px;}
         .install-box { background: white; padding: 30px 20px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
         .ios-instruction { font-size: 0.9rem; background: #f8f9fa; padding: 12px; border-radius: 12px; border: 1.5px dashed #ccc; margin-bottom: 15px; color: var(--text-main); display: none;}
 
-        /* Loader - Faster Spin */
+        /* Loader */
         .loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: none; justify-content: center; align-items: center; z-index: 3000; }
         .spinner { border: 4px solid #eee; border-top: 4px solid var(--primary); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.6s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -160,6 +158,11 @@
         .history-filters .btn { width: auto; flex: 1 0 auto; margin: 0; padding: 12px 18px; font-size: 0.9rem; background: var(--card); color: var(--text-main); border: 1.5px solid #eee; border-radius: 30px; white-space: nowrap; box-shadow: none; font-weight: 600;}
         .history-filters .btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,168,107,0.2); }
 
+        /* New Deposit Elements CSS */
+        .btn-amt { flex: 1; padding: 12px 0; background: white; border: 1.5px solid var(--primary); color: var(--primary); border-radius: 8px; font-weight: bold; cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.1s; font-size: 0.95rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
+        .btn-amt:active { background: var(--primary); color: white; transform: scale(0.95);}
+        .utr-paste-btn { position: absolute; right: 8px; bottom: 8px; background: rgba(0, 168, 107, 0.1); border: 1.5px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; z-index: 2;}
+        .utr-paste-btn:active { background: var(--primary); color: white; transform: scale(0.95); }
         .qr-container { text-align: center; margin-bottom: 20px; background: #fafafa; padding: 15px; border-radius: 15px;}
         .qr-container img { max-width: 180px; border-radius: 10px; padding: 10px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
         .upi-text { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin-top: 12px; letter-spacing: 1px;}
@@ -167,7 +170,13 @@
 </head>
 <body>
 
-    <div class="app-bar" id="appBarTitle">Login</div>
+    <div class="app-bar">
+        <div style="display: flex; align-items: center; justify-content: center; position: relative; width: 100%;">
+            <i class="fas fa-arrow-left" id="backBtn" style="display:none; position:absolute; left:0; font-size:1.3rem; cursor:pointer;"></i>
+            <span id="appBarTitle">Login</span>
+        </div>
+    </div>
+    
     <div class="loader-overlay" id="loader"><div class="spinner"></div></div>
 
     <div class="modal-overlay" id="alertModal">
@@ -183,19 +192,12 @@
     <div class="install-modal" id="installModal">
         <div class="install-box">
             <div class="close-form" onclick="closeInstallModal()" style="top: 15px; right: 15px; position: absolute;"><i class="fas fa-times"></i></div>
-            
-            <div style="background: var(--primary); width: 75px; height: 75px; border-radius: 20px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,168,107,0.3);">
-                CG
-            </div>
-            
+            <div style="background: var(--primary); width: 75px; height: 75px; border-radius: 20px; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.2rem; font-weight: bold; box-shadow: 0 5px 15px rgba(0,168,107,0.3);">CG</div>
             <h3 style="margin-bottom: 10px; color: var(--text-main); font-size: 1.4rem;">Install Cashgain App</h3>
             <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px;">Get a faster, safer, and app-like experience directly on your Home Screen and App List.</p>
-            
-            <!-- iOS Specific Instruction -->
             <div class="ios-instruction" id="iosInstruction">
                 To install on iPhone/iPad: tap the <b>Share</b> icon <i class="fas fa-external-link-alt" style="color:var(--primary); margin:0 4px;"></i> below and select <br><b>"Add to Home Screen"</b>.
             </div>
-
             <button class="btn" id="installBtn" onclick="installApp()" style="margin-bottom: 12px;">Install Now</button>
             <button class="btn" onclick="closeInstallModal()" style="background: white; color: var(--text-light); box-shadow: none; border: 2px solid #eee; padding: 12px;">Maybe Later</button>
         </div>
@@ -207,9 +209,7 @@
             <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Welcome Back!</h2>
             <div class="input-group"><label>Mobile Number or User ID</label><input type="text" id="loginId" placeholder="Enter ID or Mobile"></div>
             <div class="input-group"><label>Password</label><input type="password" id="loginPass" placeholder="Enter Password"></div>
-            
             <div class="forgot-link" onclick="switchPage('pageForgot', 'Forgot Password')">Forgot Password?</div>
-            
             <button class="btn" onclick="handleLogin()" style="margin-top: 10px;">Login Securely</button>
             <div class="toggle-link" onclick="switchPage('pageRegister', 'Register')">Don't have an account? Register</div>
         </div>
@@ -221,7 +221,6 @@
             <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px; font-size: 1.8rem;">Forgot Password</h2>
             <p style="text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px;">Enter your registered Mobile Number or Email to recover your password.</p>
             <div class="input-group"><label>Mobile Number or Email</label><input type="text" id="forgotId" placeholder="Enter Mobile or Email"></div>
-            
             <button class="btn" onclick="handleForgotPass()" style="margin-top: 10px;">Send Password</button>
             <div class="toggle-link" onclick="switchPage('pageLogin', 'Login')">Back to Login</div>
         </div>
@@ -243,6 +242,16 @@
 
     <!-- HOME PAGE -->
     <div id="pageHome" class="page">
+        
+        <!-- Profile Card Added to Home Page -->
+        <div class="profile-card">
+            <div class="profile-avatar"><i class="fas fa-user"></i></div>
+            <div class="profile-details">
+                <h2 id="profNameHome">User</h2>
+                <p>ID: <span id="profIdHome">---</span></p>
+            </div>
+        </div>
+
         <div class="balance-card">
             <div class="balance-header">
                 <h3>Total Balance</h3>
@@ -256,7 +265,7 @@
         </div>
 
         <div class="action-buttons-row">
-            <button class="action-btn deposit" onclick="openForm('depositForm')">
+            <button class="action-btn deposit" onclick="openDepositPage()">
                 <i class="fas fa-wallet"></i> Deposit
             </button>
             <button class="action-btn withdraw" onclick="openForm('withdrawForm')">
@@ -293,7 +302,6 @@
                     <p style="font-size: 0.85rem;">ID: <span id="profIdHist">---</span></p>
                 </div>
             </div>
-
             <div class="history-filters">
                 <button class="btn active" onclick="renderHistory('all', this)">All</button>
                 <button class="btn" onclick="renderHistory('deposits', this)">Deposit</button>
@@ -301,7 +309,6 @@
                 <button class="btn" onclick="renderHistory('earnings', this)">Earning</button>
             </div>
         </div>
-
         <div id="mainHistoryList"></div>
     </div>
 
@@ -316,7 +323,7 @@
         </div>
 
         <div class="manage-grid">
-            <div class="manage-card" onclick="openForm('depositForm')">
+            <div class="manage-card" onclick="openDepositPage()">
                 <i class="fas fa-wallet"></i><h4>Deposit Funds</h4>
             </div>
             <div class="manage-card" onclick="openForm('withdrawForm')">
@@ -334,54 +341,60 @@
         </div>
     </div>
 
-    <!-- DEPOSIT MODAL -->
-    <div class="form-modal" id="depositForm" style="text-align: center;">
-        <div class="close-form" onclick="closeForm('depositForm')"><i class="fas fa-times"></i></div>
-        <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.3rem; font-weight: 700;">Deposit Funds</h3>
-        
-        <div class="input-group" style="margin-bottom: 10px;">
-            <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 6px;"> Enter Amount to Deposit (₹)</label>
-            <input type="number" id="depAmount" oninput="updateDepositQR(this.value)" placeholder="₹0" style="text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--primary); padding: 10px; border-radius: 12px; background: rgba(0, 168, 107, 0.05); border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0, 168, 107, 0.1);">
-        </div>
-        
-        <div class="qr-container" style="margin-top: 10px; margin-bottom: 15px; padding: 12px; background: white; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #eee;">
-            <!-- QR Loader Indicator -->
-            <div id="qrLoader" style="display: none; justify-content: center; margin: 40px 0;">
-                <div class="spinner"></div>
+    <!-- NEW DEPOSIT PAGE FLOW -->
+    <div id="pageDeposit" class="page">
+        <div class="auth-container" style="margin-top: 15px;">
+            <div class="input-group">
+                <label style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 12px;">Enter Amount to Deposit (₹)</label>
+                <input type="number" id="newDepAmount" placeholder="₹0" style="text-align: center; font-size: 1.8rem; font-weight: 800; color: var(--primary); padding: 15px; border-radius: 12px; background: rgba(0, 168, 107, 0.05); border: 2px solid var(--primary); box-shadow: 0 2px 8px rgba(0, 168, 107, 0.1);">
             </div>
-            <!-- QR Code Image -->
-            <img id="paymentQr" src="" alt="Payment QR" style="max-width: 180px; margin-bottom: 5px; display: none;" onload="document.getElementById('qrLoader').style.display='none'; this.style.display='inline-block';">
-            <div class="upi-text" id="upiDisplay" style="font-size: 1rem; margin-top: 5px;"></div>
-            <p style="font-size:0.8rem; margin-top:5px; color:var(--text-light); font-weight: 500;">Scan QR & Pay exact amount</p>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 25px;">
+                <button class="btn-amt" onclick="document.getElementById('newDepAmount').value=500">500</button>
+                <button class="btn-amt" onclick="document.getElementById('newDepAmount').value=1000">1000</button>
+                <button class="btn-amt" onclick="document.getElementById('newDepAmount').value=2000">2000</button>
+                <button class="btn-amt" onclick="document.getElementById('newDepAmount').value=5000">5000</button>
+            </div>
+            
+            <button class="btn" onclick="goToScanPay()" style="font-size: 1.1rem; padding: 14px;">Pay</button>
         </div>
-        
-        <div class="input-group" style="margin-bottom: 10px;">
-            <label style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px;"> Enter UTR / Reference No (12 Digit)</label>
-            <input type="text" id="depUtr" placeholder="Enter 12-digit UTR here" style="text-align: center; font-size: 1rem; font-weight: 700; letter-spacing: 1px; padding: 10px; border-radius: 10px; border: 1.5px solid #ddd;">
+    </div>
+
+    <!-- NEW SCAN & PAY PAGE -->
+    <div id="pageScanPay" class="page">
+        <div class="auth-container" style="margin-top: 15px; text-align: center;">
+            
+            <div class="qr-container" style="padding: 20px; background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1.5px solid #eee;">
+                <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.3rem; font-weight: 800;">Pay <span id="displayPayAmount" style="color:var(--primary);">₹0</span></h3>
+                <div id="qrLoaderNew" style="display: none; justify-content: center; margin: 40px 0;"><div class="spinner"></div></div>
+                <img id="paymentQrNew" src="" alt="Payment QR" style="max-width: 190px; margin-bottom: 5px; display: none;" onload="document.getElementById('qrLoaderNew').style.display='none'; this.style.display='inline-block';">
+                <div class="upi-text" id="upiDisplayNew" style="font-size: 1.05rem; margin-top: 10px;"></div>
+            </div>
+            
+            <p style="font-size:0.9rem; margin:15px 0 20px 0; color:var(--text-light); font-weight: 600; line-height: 1.4;">Scan the QR code and pay the exact amount. Once done, copy your 12-digit UTR/Reference No. and paste it below.</p>
+            
+            <div class="input-group" style="position: relative; text-align: left; margin-bottom: 25px;">
+                <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 8px;">UTR / Reference No (12 Digit)</label>
+                <input type="text" inputmode="numeric" id="newDepUtr" placeholder="Enter UTR here" style="padding-right: 85px; font-weight: 700; font-size: 1.05rem; letter-spacing: 1px; padding-top: 15px; padding-bottom: 15px;">
+                <button class="utr-paste-btn" onclick="pasteUtr()">Paste</button>
+            </div>
+            
+            <button class="btn" onclick="submitNewDeposit()" style="font-size: 1.1rem; padding: 14px;">Submit</button>
         </div>
-        
-        <button class="btn" onclick="submitDeposit()" style="margin-top: 5px; font-size: 1.05rem; padding: 12px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
     <!-- WITHDRAWAL MODAL -->
     <div class="form-modal" id="withdrawForm" style="text-align: center;">
         <div class="close-form" onclick="closeForm('withdrawForm')"><i class="fas fa-times"></i></div>
         <h3 style="margin-bottom: 15px; color:var(--text-main); font-size:1.4rem; font-weight: 700;">Withdraw Funds</h3>
-        
-        <!-- Withdrawal Card Container -->
         <div style="background: white; padding: 25px 20px; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1.5px solid #eee; margin-bottom: 20px;">
-            
             <p style="color: var(--text-light); font-weight: 600; font-size: 0.95rem; margin-bottom: 5px;">Total Withdrawal</p>
             <h2 id="modalTotalWithdraw" style="color: var(--primary); font-size: 2rem; margin-bottom: 25px; font-weight: 800;">₹0.00</h2>
-            
             <div class="input-group" style="margin-bottom: 0;">
                 <label style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 10px;">Enter Withdrawal Amount (₹)</label>
-                <!-- Red styled input for withdrawal -->
                 <input type="number" id="withAmount" placeholder="₹0" style="text-align: center; font-size: 1.6rem; font-weight: 800; color: #e74c3c; padding: 12px; border-radius: 12px; background: rgba(231, 76, 60, 0.05); border: 2px solid #e74c3c; box-shadow: 0 2px 8px rgba(231, 76, 60, 0.1);">
             </div>
-            
         </div>
-
         <button class="btn" onclick="submitWithdrawal()" style="font-size: 1.1rem; padding: 14px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 168, 107, 0.2);">Submit Request</button>
     </div>
 
@@ -411,89 +424,53 @@
         let currentUserName = "User";
         let userDataCache = null;
         let lastDataHash = ""; 
-
-        // PWA Install Logic - GENERATING REAL PNG ICONS ON THE FLY FOR APP LIST (WEBAPK)
-        let deferredPrompt;
         
-        // This function draws the "CG" logo dynamically on an invisible canvas and converts it to a clean PNG Base64 image.
+        let lastTabId = 'pageHome';
+        let lastTabTitle = 'Dashboard';
+
+        // PWA Logic
+        let deferredPrompt;
         function createPngIcon(size) {
             let canvas = document.createElement('canvas');
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = size; canvas.height = size;
             let ctx = canvas.getContext('2d');
-            
-            // App Green Background
             ctx.fillStyle = '#00a86b';
             ctx.beginPath();
-            if(ctx.roundRect) {
-                ctx.roundRect(0, 0, size, size, size * 0.2); // Rounded corners
-            } else {
-                ctx.rect(0, 0, size, size); // Fallback for old browsers
-            }
+            if(ctx.roundRect) { ctx.roundRect(0, 0, size, size, size * 0.2); } 
+            else { ctx.rect(0, 0, size, size); }
             ctx.fill();
-            
-            // White Text "CG"
             ctx.fillStyle = '#ffffff';
             ctx.font = 'bold ' + (size * 0.45) + 'px Arial, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            // Adjusting text positioning slightly to make it look perfectly centered
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             ctx.fillText('CG', size / 2, (size / 2) + (size * 0.04));
-            
-            return canvas.toDataURL('image/png'); // Returning exactly a PNG required by Android App Drawer
+            return canvas.toDataURL('image/png'); 
         }
 
         function initPWA() {
-            // 1. Generate 192px and 512px PNG Icons dynamically
             const icon192 = createPngIcon(192);
             const icon512 = createPngIcon(512);
-            
-            // 2. Build manifest dynamically for GitHub Pages ensuring App Drawer compatibility
             const manifest = {
-                name: "Cashgain",
-                short_name: "Cashgain",
-                start_url: window.location.href.split('?')[0], // Absolutely correct relative URL for scope
-                display: "standalone",
-                background_color: "#f4f6f9",
-                theme_color: "#00a86b",
+                name: "Cashgain", short_name: "Cashgain",
+                start_url: window.location.href.split('?')[0], 
+                display: "standalone", background_color: "#f4f6f9", theme_color: "#00a86b",
                 icons: [
                     { src: icon192, sizes: "192x192", type: "image/png", purpose: "any maskable" },
                     { src: icon512, sizes: "512x512", type: "image/png", purpose: "any maskable" }
                 ]
             };
-            
             const manifestString = JSON.stringify(manifest);
             document.getElementById('manifest-link').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString));
-
-            // Set Apple Touch Icon dynamically for iPhones
-            let appleIcon = document.createElement('link');
-            appleIcon.rel = 'apple-touch-icon';
-            appleIcon.href = icon192;
+            let appleIcon = document.createElement('link'); appleIcon.rel = 'apple-touch-icon'; appleIcon.href = icon192;
             document.head.appendChild(appleIcon);
-
-            // 3. Register a proper dummy Service Worker to satisfy Android Chrome completely
             if ('serviceWorker' in navigator) {
-                const swCode = `
-                    self.addEventListener('install', (e) => self.skipWaiting()); 
-                    self.addEventListener('activate', (e) => self.clients.claim()); 
-                    self.addEventListener('fetch', (e) => {
-                        e.respondWith(fetch(e.request).catch(() => new Response('Offline')));
-                    });
-                `;
+                const swCode = `self.addEventListener('install', (e) => self.skipWaiting()); self.addEventListener('activate', (e) => self.clients.claim()); self.addEventListener('fetch', (e) => { e.respondWith(fetch(e.request).catch(() => new Response('Offline'))); });`;
                 const swBlob = new Blob([swCode], { type: 'application/javascript' });
                 navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(err => console.log('SW Error', err));
             }
-
-            // 4. Listen for Chrome Install Prompt
             window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                if (!localStorage.getItem('pwa_declined')) {
-                    setTimeout(() => { document.getElementById('installModal').style.display = 'flex'; }, 1000); 
-                }
+                e.preventDefault(); deferredPrompt = e;
+                if (!localStorage.getItem('pwa_declined')) { setTimeout(() => { document.getElementById('installModal').style.display = 'flex'; }, 1000); }
             });
-
-            // 5. Detect iOS to show manual instruction
             const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
             const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
             if (isIos && !isInStandaloneMode && !localStorage.getItem('pwa_declined')) {
@@ -504,50 +481,30 @@
                 }, 1000);
             }
         }
-
         function installApp() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User installed the app');
-                    }
-                    deferredPrompt = null;
-                });
+                deferredPrompt.userChoice.then((choiceResult) => { deferredPrompt = null; });
             }
             closeInstallModal();
         }
+        function closeInstallModal() { document.getElementById('installModal').style.display = 'none'; localStorage.setItem('pwa_declined', 'true'); }
 
-        function closeInstallModal() {
-            document.getElementById('installModal').style.display = 'none';
-            localStorage.setItem('pwa_declined', 'true');
-        }
-
-        // भारतीय मुद्रा को फॉर्मेट करने का फ़ंक्शन
         function formatINR(amount) {
-            return new Intl.NumberFormat('en-IN', {
-                style: 'currency',
-                currency: 'INR',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(amount || 0);
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount || 0);
         }
 
         window.onload = function() {
             hideLoader(); 
-            initPWA(); // Initialize the Install UI here
-
+            initPWA(); 
             let savedUser = localStorage.getItem("fintech_uid");
             let savedName = localStorage.getItem("fintech_name");
-            
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
 
             if (savedUser) {
                 currentUser = savedUser;
-                if(savedName && savedName !== "undefined" && savedName !== "null") {
-                    currentUserName = savedName;
-                }
+                if(savedName && savedName !== "undefined" && savedName !== "null") { currentUserName = savedName; }
                 loadDashboard();
             } else if (refCode) {
                 document.getElementById('regReferral').value = refCode;
@@ -555,10 +512,7 @@
             }
         };
 
-        function showLoader() { 
-            if(document.getElementById('alertModal').style.display === 'flex') return;
-            document.getElementById('loader').style.display = 'flex'; 
-        }
+        function showLoader() { if(document.getElementById('alertModal').style.display === 'flex') return; document.getElementById('loader').style.display = 'flex'; }
         function hideLoader() { document.getElementById('loader').style.display = 'none'; }
         
         function customAlert(title, message, isSuccess = true, customIcon = null) {
@@ -583,6 +537,12 @@
         function navTab(pageId, elm, title, filterType = 'all') {
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(elm) elm.classList.add('active');
+            
+            lastTabId = pageId;
+            lastTabTitle = title;
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'flex';
+            
             switchPage(pageId, title);
             
             if(pageId === 'pageHistory') {
@@ -596,7 +556,6 @@
         function openForm(id) {
             document.getElementById('alertModal').style.display = 'none';
             document.getElementById(id).style.display = 'block';
-            if(id == 'depositForm') { updateDepositQR(document.getElementById('depAmount').value); }
         }
         function closeForm(id) { document.getElementById(id).style.display = 'none'; }
 
@@ -606,7 +565,6 @@
                 let qs = "?action=" + action + "&data=" + encodeURIComponent(JSON.stringify(payload));
                 let response = await fetch(BACKEND_URL + qs, { method: 'GET', redirect: 'follow' });
                 let text = await response.text();
-                
                 if(!isSilent) hideLoader();
                 try {
                     let result = JSON.parse(text);
@@ -615,9 +573,7 @@
                     } else {
                         successCallback(result);
                     }
-                } catch(e) {
-                    console.error("Parse Error:", text);
-                }
+                } catch(e) { console.error("Parse Error:", text); }
             } catch (err) {
                 if(!isSilent) hideLoader();
                 if(!isSilent) customAlert("Network Error", "Unable to connect to Server. Check connection.", false);
@@ -629,49 +585,35 @@
             if (inputStr.includes('@')) {
                 let parts = inputStr.split('@');
                 let name = parts[0];
-                let domain = parts[1];
-                let maskedName = name.length > 2 ? name.substring(0, 2) + "XXXXXX" : "XX";
-                return maskedName + "@" + domain;
-            } else {
-                return inputStr.length > 4 ? "XXXXXX" + inputStr.substring(inputStr.length - 4) : inputStr;
-            }
+                return (name.length > 2 ? name.substring(0, 2) + "XXXXXX" : "XX") + "@" + parts[1];
+            } else { return inputStr.length > 4 ? "XXXXXX" + inputStr.substring(inputStr.length - 4) : inputStr; }
         }
 
         function handleForgotPass() {
             let id = document.getElementById('forgotId').value;
             if(!id) return customAlert("Error", "Please enter Mobile Number or Email", false);
-            
             apiCall('forgotPassword', { loginId: id }, function(res) {
                 if(res.success) {
-                    let emailString = res.email || id; 
-                    let masked = maskEmailOrMobile(emailString);
-                    let msg = `<b>आपके रजिस्टर्ड ईमेल पर पासवर्ड भेज दिया गया है।</b><br><br>${masked}`;
-                    customAlert("Sent Successfully", msg, true, "fas fa-envelope-circle-check");
+                    let masked = maskEmailOrMobile(res.email || id);
+                    customAlert("Sent Successfully", `<b>आपके रजिस्टर्ड ईमेल पर पासवर्ड भेज दिया गया है।</b><br><br>${masked}`, true, "fas fa-envelope-circle-check");
                     document.getElementById('forgotId').value = ""; 
-                } else {
-                    customAlert("Failed", res.message, false);
-                }
+                } else customAlert("Failed", res.message, false);
             });
         }
 
         function handleRegister() {
             let data = {
-                name: document.getElementById('regName').value,
-                mobile: document.getElementById('regMobile').value,
-                email: document.getElementById('regEmail').value,
-                password: document.getElementById('regPass').value,
+                name: document.getElementById('regName').value, mobile: document.getElementById('regMobile').value,
+                email: document.getElementById('regEmail').value, password: document.getElementById('regPass').value,
                 referral: document.getElementById('regReferral').value
             };
             if(!data.name || !data.mobile || !data.password) return customAlert("Error", "Name, Mobile & Password required", false);
             
             apiCall('registerUser', data, function(res) {
                 if(res.success) {
-                    let msg = `<b>Registration Successful!</b><br><br><b>User ID:</b> ${res.uid}<br><b>Password:</b> ${res.password}<br><br><i>Take a screenshot!</i>`;
-                    customAlert("Welcome!", msg, true, "fas fa-user-check");
-                    currentUser = res.uid;
-                    currentUserName = res.name;
-                    localStorage.setItem("fintech_uid", currentUser);
-                    localStorage.setItem("fintech_name", currentUserName);
+                    customAlert("Welcome!", `<b>Registration Successful!</b><br><br><b>User ID:</b> ${res.uid}<br><b>Password:</b> ${res.password}<br><br><i>Take a screenshot!</i>`, true, "fas fa-user-check");
+                    currentUser = res.uid; currentUserName = res.name;
+                    localStorage.setItem("fintech_uid", currentUser); localStorage.setItem("fintech_name", currentUserName);
                     loadDashboard();
                 } else customAlert("Failed", res.message, false);
             });
@@ -681,13 +623,10 @@
             let id = document.getElementById('loginId').value;
             let pass = document.getElementById('loginPass').value;
             if(!id || !pass) return customAlert("Error", "Credentials required", false);
-            
             apiCall('loginUser', { loginId: id, password: pass }, function(res) {
                 if(res.success) {
-                    currentUser = res.uid;
-                    currentUserName = res.name;
-                    localStorage.setItem("fintech_uid", currentUser);
-                    localStorage.setItem("fintech_name", currentUserName);
+                    currentUser = res.uid; currentUserName = res.name;
+                    localStorage.setItem("fintech_uid", currentUser); localStorage.setItem("fintech_name", currentUserName);
                     loadDashboard();
                 } else customAlert("Failed", res.message, false);
             });
@@ -696,81 +635,58 @@
         function parseDateString(dStr) {
             if(!dStr) return 0;
             try {
-                let parts = dStr.split(' | ');
-                let dParts = parts[0].split('-');
-                let timeStr = parts[1];
-                let formatted = `${dParts[1]}/${dParts[0]}/${dParts[2]} ${timeStr}`;
-                return new Date(formatted).getTime() || 0;
-            } catch(e) {
-                return 0;
-            }
+                let parts = dStr.split(' | '); let dParts = parts[0].split('-');
+                return new Date(`${dParts[1]}/${dParts[0]}/${dParts[2]} ${parts[1]}`).getTime() || 0;
+            } catch(e) { return 0; }
         }
 
         function loadDashboard(isSilent = false) {
             apiCall('getUserData', { uid: currentUser }, function(res) {
                 if(res && res.success) {
-                    
                     let currentDataHash = JSON.stringify(res);
-                    if(isSilent && lastDataHash === currentDataHash) {
-                        return;
-                    }
-                    lastDataHash = currentDataHash;
-                    userDataCache = res;
+                    if(isSilent && lastDataHash === currentDataHash) return;
+                    lastDataHash = currentDataHash; userDataCache = res;
 
                     if(!isSilent) {
                         document.getElementById('bottomNav').style.display = 'flex';
+                        document.getElementById('backBtn').style.display = 'none';
+                        lastTabId = 'pageHome'; lastTabTitle = 'Dashboard';
                         switchPage('pageHome', 'Dashboard');
                     }
 
-                    if(res.userName && res.userName !== "") {
-                        currentUserName = res.userName;
-                        localStorage.setItem("fintech_name", currentUserName);
-                    }
-
-                    document.getElementById('profName').innerText = currentUserName;
+                    if(res.userName && res.userName !== "") { currentUserName = res.userName; localStorage.setItem("fintech_name", currentUserName); }
+                    
+                    // Update Profile info across all cards
+                    document.getElementById('profName').innerText = currentUserName; 
                     document.getElementById('profId').innerText = currentUser;
+                    
                     if(document.getElementById('profNameHist')) document.getElementById('profNameHist').innerText = currentUserName;
                     if(document.getElementById('profIdHist')) document.getElementById('profIdHist').innerText = currentUser;
+                    
+                    if(document.getElementById('profNameHome')) document.getElementById('profNameHome').innerText = currentUserName;
+                    if(document.getElementById('profIdHome')) document.getElementById('profIdHome').innerText = currentUser;
 
                     if(res.settings && res.settings['Global Notification Pop-up']) {
                         let popupMsg = String(res.settings['Global Notification Pop-up']);
                         if(!sessionStorage.getItem('notif_shown') && popupMsg.trim() !== "") {
-                            if(!isSilent) {
-                                customAlert("Notification", popupMsg, true, "fas fa-bell");
-                                sessionStorage.setItem('notif_shown', 'true');
-                            }
+                            if(!isSilent) { customAlert("Notification", popupMsg, true, "fas fa-bell"); sessionStorage.setItem('notif_shown', 'true'); }
                         }
                     }
 
                     document.getElementById('homeBalance').innerText = formatINR(res.balances.totalBalance);
                     document.getElementById('homeDep').innerText = formatINR(res.balances.totalDeposit);
-                    
-                    let roiEarning = res.balances.totalEarning || 0;
-                    let refEarning = res.balances.totalReferral || 0;
-                    let combinedEarning = roiEarning + refEarning;
-                    document.getElementById('homeEarn').innerText = formatINR(combinedEarning);
-                    
-                    if(document.getElementById('modalTotalWithdraw')) {
-                        document.getElementById('modalTotalWithdraw').innerText = formatINR(res.balances.totalWithdrawal);
-                    }
+                    document.getElementById('homeEarn').innerText = formatINR((res.balances.totalEarning || 0) + (res.balances.totalReferral || 0));
+                    if(document.getElementById('modalTotalWithdraw')) document.getElementById('modalTotalWithdraw').innerText = formatINR(res.balances.totalWithdrawal);
 
                     let earnHtml = "";
-                    let allEarnings = (res.history.earnings || []).slice();
-                    
-                    allEarnings.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
-                    
-                    if(allEarnings.length == 0) {
-                        earnHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No earnings yet</p>";
-                    } else {
-                        let top3Earnings = allEarnings.slice(0, 3);
-                        top3Earnings.forEach(e => { 
+                    let allEarnings = (res.history.earnings || []).slice().sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
+                    if(allEarnings.length == 0) earnHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No earnings yet</p>";
+                    else {
+                        allEarnings.slice(0, 3).forEach(e => { 
                             let rem = e.remark && String(e.remark).trim() !== "" ? String(e.remark) : "Earnings Credited";
                             earnHtml += `<div class="history-item"><div class="history-info"><h4>${rem}</h4><p>${e.date || ''}</p></div><div class="history-amount">+${formatINR(e.amount)}</div></div>`; 
                         });
-                        
-                        if(allEarnings.length > 3) {
-                            earnHtml += `<button class="btn" style="background:var(--secondary); margin-top:10px; font-size:0.95rem; font-weight:600; box-shadow:none;" onclick="navTab('pageHistory', document.querySelectorAll('.nav-item')[2], 'All History', 'earnings')">Show More Recent Earnings</button>`;
-                        }
+                        if(allEarnings.length > 3) earnHtml += `<button class="btn" style="background:var(--secondary); margin-top:10px; font-size:0.95rem; font-weight:600; box-shadow:none;" onclick="navTab('pageHistory', document.querySelectorAll('.nav-item')[2], 'All History', 'earnings')">Show More Recent Earnings</button>`;
                     }
                     document.getElementById('homeRecentEarnings').innerHTML = earnHtml;
 
@@ -779,43 +695,21 @@
                     document.getElementById('refComm').innerText = formatINR(res.balances.totalReferral);
 
                     let referHtml = "";
-                    let refArr = (res.history.referrals || []).slice();
-                    refArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
-
-                    if(refArr.length == 0) {
-                        referHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No referrals yet</p>";
-                    } else {
+                    let refArr = (res.history.referrals || []).slice().sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
+                    if(refArr.length == 0) referHtml = "<p style='text-align:center; color:#999; margin-top:20px;'>No referrals yet</p>";
+                    else {
                         refArr.forEach(e => { 
-                            let mobile = e.mobile || ""; 
-                            let waLink = e.whatsappLink ? `<a href="${e.whatsappLink}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : (mobile ? `<a href="https://wa.me/91${mobile}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : '');
-                            
-                            let uName = e.name || "Referred User";
-                            let uID = e.uid || "Unknown ID";
-                            let rDate = e.date || "";
-                            
-                            referHtml += `
-                            <div class="history-item">
-                                <div class="history-info" style="width: 100%;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <h4 style="margin-bottom: 0;">${uName} <span style="font-size:0.8rem; color:#888;">(${uID})</span></h4>
-                                        ${waLink}
-                                    </div>
-                                    <p style="margin-bottom: 0; margin-top: 4px;">${rDate}</p>
-                                </div>
-                            </div>`; 
+                            let waLink = e.whatsappLink ? `<a href="${e.whatsappLink}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : (e.mobile ? `<a href="https://wa.me/91${e.mobile}" target="_blank" class="wa-btn" style="margin-top: 0;"><i class="fab fa-whatsapp"></i> Chat</a>` : '');
+                            referHtml += `<div class="history-item"><div class="history-info" style="width: 100%;"><div style="display: flex; justify-content: space-between; align-items: center;"><h4 style="margin-bottom: 0;">${e.name || "Referred User"} <span style="font-size:0.8rem; color:#888;">(${e.uid || "Unknown ID"})</span></h4>${waLink}</div><p style="margin-bottom: 0; margin-top: 4px;">${e.date || ""}</p></div></div>`; 
                         });
                     }
                     document.getElementById('referHistoryList').innerHTML = referHtml;
 
                     if(document.getElementById('pageHistory').classList.contains('active')) {
-                        let btns = document.querySelectorAll('.history-filters .btn');
-                        let activeBtn = Array.from(btns).find(b => b.classList.contains('active'));
+                        let activeBtn = Array.from(document.querySelectorAll('.history-filters .btn')).find(b => b.classList.contains('active'));
                         if (activeBtn) {
-                            let fType = 'all';
-                            let t = activeBtn.innerText.toLowerCase();
-                            if(t.includes('deposit')) fType = 'deposits';
-                            else if(t.includes('withdraw')) fType = 'withdrawals';
-                            else if(t.includes('earning')) fType = 'earnings';
+                            let t = activeBtn.innerText.toLowerCase(), fType = 'all';
+                            if(t.includes('deposit')) fType = 'deposits'; else if(t.includes('withdraw')) fType = 'withdrawals'; else if(t.includes('earning')) fType = 'earnings';
                             renderHistory(fType, activeBtn);
                         }
                     }
@@ -823,37 +717,98 @@
             }, isSilent);
         }
 
-        function updateDepositQR(amount) {
+        // --- NEW DEPOSIT & SCAN PAGE LOGIC ---
+
+        function openDepositPage() {
+            document.getElementById('bottomNav').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('backBtn').onclick = () => { goBackToMain(); };
+            document.getElementById('newDepAmount').value = ""; // Reset
+            switchPage('pageDeposit', 'Deposit');
+        }
+
+        function goToScanPay() {
+            let amt = document.getElementById('newDepAmount').value;
+            if(!amt || amt <= 0) return customAlert("Warning", "Please enter a valid amount", false);
+            
+            document.getElementById('displayPayAmount').innerText = formatINR(amt);
+            updateNewDepositQR(amt);
+            
+            document.getElementById('backBtn').onclick = () => { 
+                // Go back to the deposit amount entry page
+                document.getElementById('backBtn').onclick = () => { goBackToMain(); };
+                switchPage('pageDeposit', 'Deposit'); 
+            };
+            document.getElementById('newDepUtr').value = ""; // Reset
+            switchPage('pageScanPay', 'Scan & Pay');
+        }
+
+        function goBackToMain() {
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('bottomNav').style.display = 'flex';
+            switchPage(lastTabId, lastTabTitle);
+        }
+
+        function updateNewDepositQR(amount) {
             let upi = (userDataCache && userDataCache.settings) ? userDataCache.settings['ADMIN_UPI_ID'] : "";
-            if(!upi) return;
-            document.getElementById('upiDisplay').innerText = upi;
+            if(!upi) return; // Wait for cache
+            document.getElementById('upiDisplayNew').innerText = upi;
             let upiString = `upi://pay?pa=${upi}&pn=AppAdmin&cu=INR`;
             if(amount && amount > 0) upiString += `&am=${amount}`;
             
-            document.getElementById('qrLoader').style.display = 'flex';
-            document.getElementById('paymentQr').style.display = 'none';
-            document.getElementById('paymentQr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
+            document.getElementById('qrLoaderNew').style.display = 'flex';
+            document.getElementById('paymentQrNew').style.display = 'none';
+            document.getElementById('paymentQrNew').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
         }
+
+        async function pasteUtr() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('newDepUtr').value = text;
+            } catch (err) {
+                customAlert("Error", "Failed to access clipboard. Please paste manually.", false);
+            }
+        }
+
+        function submitNewDeposit() {
+            let amt = document.getElementById('newDepAmount').value;
+            let utr = document.getElementById('newDepUtr').value;
+            if(!amt || !utr) return customAlert("Warning", "Amount & UTR Required", false);
+            
+            apiCall('submitDeposit', { uid: currentUser, amount: amt, utr: utr }, function(res) {
+                loadDashboard(false); 
+                
+                // Formatted Success Alert with Date and Time
+                let d = new Date();
+                let dtStr = d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+                
+                let successHtml = `<br><div style="text-align:left; background:#f4f6f9; padding:12px; border-radius:12px; margin-top:15px; font-size:0.95rem; border:1px solid #ddd; color:var(--text-main);">
+                    <div style="margin-bottom:6px;"><b>Amount:</b> <span style="color:var(--primary); font-weight:bold;">${formatINR(amt)}</span></div>
+                    <div style="margin-bottom:6px;"><b>UTR No:</b> <span style="letter-spacing:1px;">${utr}</span></div>
+                    <div><b>Date & Time:</b> ${dtStr}</div>
+                </div>`;
+                
+                customAlert("Deposit Submitted", res.message + successHtml, true);
+                
+                document.getElementById('newDepAmount').value = ""; 
+                document.getElementById('newDepUtr').value = "";
+                goBackToMain();
+            });
+        }
+        
+        // --- END OF DEPOSIT LOGIC ---
 
         function renderHistory(type, btnElement = null) {
             if(!userDataCache) return;
-
             if(btnElement) {
-                document.querySelectorAll('.history-filters .btn').forEach(b => {
-                    b.classList.remove('active');
-                });
+                document.querySelectorAll('.history-filters .btn').forEach(b => b.classList.remove('active'));
                 btnElement.classList.add('active');
             } else {
                 let btns = document.querySelectorAll('.history-filters .btn');
                 let targetBtn = Array.from(btns).find(b => b.innerText.toLowerCase().includes(type.split('s')[0].toLowerCase()));
-                if(targetBtn) {
-                    btns.forEach(b => b.classList.remove('active'));
-                    targetBtn.classList.add('active');
-                }
+                if(targetBtn) { btns.forEach(b => b.classList.remove('active')); targetBtn.classList.add('active'); }
             }
-
             let dataArr = [];
-            
             if (type === 'all') {
                 let dep = (userDataCache.history.transactions || []).filter(x => x.type=='Deposit').map(x => ({...x, _t: 'Deposit'}));
                 let wit = (userDataCache.history.transactions || []).filter(x => x.type=='Withdrawal').map(x => ({...x, _t: 'Withdrawal'}));
@@ -861,51 +816,24 @@
                 let ern = (userDataCache.history.earnings || []).filter(x => x.type=='ROI').map(x => ({...x, _t: 'ROI Earning'}));
                 let ref = (userDataCache.history.earnings || []).filter(x => x.type=='Refferal' || x.type=='Referral').map(x => ({...x, _t: 'Referral Bonus'}));
                 dataArr = [...dep, ...wit, ...kyc, ...ern, ...ref];
-            } else if(type === 'deposits') { 
-                dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Deposit').map(x=>({...x, _t: 'Deposit'})); 
-            } else if(type === 'withdrawals') { 
-                dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Withdrawal').map(x=>({...x, _t: 'Withdrawal'})); 
-            } else if(type === 'earnings') { 
+            } else if(type === 'deposits') { dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Deposit').map(x=>({...x, _t: 'Deposit'})); }
+            else if(type === 'withdrawals') { dataArr = (userDataCache.history.transactions||[]).filter(x => x.type=='Withdrawal').map(x=>({...x, _t: 'Withdrawal'})); }
+            else if(type === 'earnings') { 
                 let ern = (userDataCache.history.earnings || []).filter(x => x.type=='ROI').map(x => ({...x, _t: 'ROI Earning'}));
                 let ref = (userDataCache.history.earnings || []).filter(x => x.type=='Refferal' || x.type=='Referral').map(x => ({...x, _t: 'Referral Bonus'}));
                 dataArr = [...ern, ...ref];
             }
-
             dataArr.sort((a,b) => parseDateString(b.date) - parseDateString(a.date));
-
-            let html = "";
-            if(dataArr.length == 0) html = "<p style='text-align:center; padding:30px 20px; color:#999; font-size:1.1rem;'>No Records Found!</p>";
+            let html = dataArr.length == 0 ? "<p style='text-align:center; padding:30px 20px; color:#999; font-size:1.1rem;'>No Records Found!</p>" : "";
             
             dataArr.forEach(item => {
                 let statusColor = item.status == "Pending" ? "pending" : (item._t == "Withdrawal" ? "withdraw" : "");
                 let sign = (item._t == "Withdrawal" || item._t == "KYC") ? "" : "+";
                 let amountStr = item._t == "KYC" ? "KYC Update" : `${sign}${formatINR(item.amount)}`;
-                
                 let displayRemark = (item.remark && String(item.remark).trim() !== "") ? ' | ' + String(item.remark) : '';
-                
-                html += `<div class="history-item ${statusColor}">
-                            <div class="history-info">
-                                <h4>${item._t} ${item.status ? `(${item.status})` : ''}</h4>
-                                <p>${item.date || ''}${displayRemark}</p>
-                            </div>
-                            <div class="history-amount">${amountStr}</div>
-                         </div>`;
+                html += `<div class="history-item ${statusColor}"><div class="history-info"><h4>${item._t} ${item.status ? `(${item.status})` : ''}</h4><p>${item.date || ''}${displayRemark}</p></div><div class="history-amount">${amountStr}</div></div>`;
             });
             document.getElementById('mainHistoryList').innerHTML = html;
-        }
-
-        function submitDeposit() {
-            let amt = document.getElementById('depAmount').value;
-            let utr = document.getElementById('depUtr').value;
-            if(!amt || !utr) return customAlert("Warning", "Amount & UTR Required", false);
-            
-            closeForm('depositForm');
-            apiCall('submitDeposit', { uid: currentUser, amount: amt, utr: utr }, function(res) {
-                loadDashboard(false); 
-                customAlert("Success", res.message, true);
-                document.getElementById('depAmount').value = ""; document.getElementById('depUtr').value = "";
-                updateDepositQR(""); 
-            });
         }
 
         function submitWithdrawal() {
@@ -913,76 +841,48 @@
                 closeForm('withdrawForm');
                 return customAlert("Notice", "Withdrawal अभी बंद है कृपया बाद में पुनः प्रयास करे।", false);
             }
-
             let amt = parseFloat(document.getElementById('withAmount').value);
             if(!amt || amt <= 0) return customAlert("Warning", "Enter valid amount", false);
             if(amt > userDataCache.balances.totalBalance) return customAlert("Failed", "Insufficient Balance!", false);
 
             closeForm('withdrawForm');
-            
             apiCall('submitWithdrawal', { uid: currentUser, amount: amt }, function(res) {
                 userDataCache.balances.totalBalance -= amt;
                 document.getElementById('homeBalance').innerText = formatINR(userDataCache.balances.totalBalance);
-                
                 customAlert("Pending", "Withdrawal Request Submitted. Balance Deducted.", true, "fas fa-clock");
                 document.getElementById('withAmount').value = "";
-                
                 loadDashboard(false); 
             });
         }
 
         function submitKyc() {
-            let bName = document.getElementById('kycBank').value;
-            let acc = document.getElementById('kycAccount').value;
-            let ifsc = document.getElementById('kycIfsc').value;
-            let upi = document.getElementById('kycUpi').value;
+            let bName = document.getElementById('kycBank').value, acc = document.getElementById('kycAccount').value, ifsc = document.getElementById('kycIfsc').value, upi = document.getElementById('kycUpi').value;
             if(!bName || !acc || !ifsc) return customAlert("Error", "Bank Details required", false);
-
             closeForm('kycForm');
-            apiCall('updateKYC', { uid: currentUser, bankName: bName, account: acc, ifsc: ifsc, upiId: upi }, function(res) {
-                customAlert("Updated", res.message, true);
-            });
+            apiCall('updateKYC', { uid: currentUser, bankName: bName, account: acc, ifsc: ifsc, upiId: upi }, function(res) { customAlert("Updated", res.message, true); });
         }
 
         function shareReferral() {
             let appUrl = `https://ranjankspp888-code.github.io/Cashgain-india-/?ref=${currentUser}`;
             let shareMessage = `🚀 Join me on Cashgain and start earning daily rewards! 💸\n\nIt's a secure platform to grow your income easily. Don't miss out on this opportunity!\n\n👉 Click the link below to register directly (My Referral Code is Auto-Applied):\n${appUrl}`;
-            
-            if (navigator.share) {
-                navigator.share({ 
-                    title: 'Join Cashgain Today!', 
-                    text: shareMessage 
-                }).catch(e => { console.log("Share cancelled or failed", e); });
-            } else { 
-                navigator.clipboard.writeText(shareMessage); 
-                customAlert("Copied", "Impressive Referral message copied to clipboard!", true); 
-            }
+            if (navigator.share) { navigator.share({ title: 'Join Cashgain Today!', text: shareMessage }).catch(e => { console.log("Share cancelled or failed", e); }); } 
+            else { navigator.clipboard.writeText(shareMessage); customAlert("Copied", "Impressive Referral message copied to clipboard!", true); }
         }
         
         function openEmailSupport() {
-            let adminEmail = "ranjankspp888@gmail.com"; 
-            let subject = encodeURIComponent("Support Request - ID: " + currentUser);
-            let body = encodeURIComponent("User ID: " + currentUser + "\nName: " + currentUserName + "\n\nMy Query: \n");
-            
-            window.location.href = `mailto:${adminEmail}?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:ranjankspp888@gmail.com?subject=${encodeURIComponent("Support Request - ID: " + currentUser)}&body=${encodeURIComponent("User ID: " + currentUser + "\nName: " + currentUserName + "\n\nMy Query: \n")}`;
         }
 
         function logout() {
             currentUser = null; currentUserName = "User"; userDataCache = null; lastDataHash = "";
-            localStorage.removeItem("fintech_uid"); 
-            localStorage.removeItem("fintech_name"); 
-            sessionStorage.removeItem("notif_shown");
+            localStorage.removeItem("fintech_uid"); localStorage.removeItem("fintech_name"); sessionStorage.removeItem("notif_shown");
             document.getElementById('bottomNav').style.display = 'none';
-            document.getElementById('loginId').value = "";
-            document.getElementById('loginPass').value = "";
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('loginId').value = ""; document.getElementById('loginPass').value = "";
             switchPage('pageLogin', 'Login');
         }
 
-        setInterval(() => {
-            if(currentUser && document.visibilityState === 'visible') {
-                loadDashboard(true); 
-            }
-        }, 2500);
+        setInterval(() => { if(currentUser && document.visibilityState === 'visible') { loadDashboard(true); } }, 2500);
 
     </script>
 </body>
